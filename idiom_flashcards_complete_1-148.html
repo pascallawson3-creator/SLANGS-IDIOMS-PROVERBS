@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idiomatic Expressions — Complete Collection 1–148</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1612;
+    --muted: #7A7168;
+    --accent: #C8521A;
+    --border: #E2DDD6;
+    --card-bg: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); min-height: 100vh; padding: 40px 24px 80px; }
+
+  header {
+    max-width: 1040px; margin: 0 auto 40px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    border-bottom: 1.5px solid var(--ink); padding-bottom: 20px; gap: 24px; flex-wrap: wrap;
+  }
+  .header-left h1 { font-family: 'Playfair Display', serif; font-size: 40px; font-weight: 600; line-height: 1.1; }
+  .header-left p { font-size: 12px; color: var(--muted); margin-top: 6px; letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-right { display: flex; gap: 10px; flex-wrap: wrap; flex-shrink: 0; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 9px 18px; border-radius: 6px; cursor: pointer;
+    transition: all .18s; border: 1.5px solid var(--ink); background: transparent; color: var(--ink);
+  }
+  .btn:hover { background: var(--ink); color: #fff; }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #a64215; border-color: #a64215; color: #fff; }
+
+  .toolbar { max-width: 1040px; margin: 0 auto 18px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .search-wrap { position: relative; flex: 1; min-width: 220px; }
+  .search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  #search {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    padding: 9px 12px 9px 36px; border: 1.5px solid var(--border); border-radius: 6px;
+    background: var(--card-bg); color: var(--ink); outline: none; transition: border-color .15s;
+  }
+  #search:focus { border-color: var(--accent); }
+
+  .tabs { max-width: 1040px; margin: 0 auto 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tab {
+    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+    padding: 5px 14px; border-radius: 999px; border: 1.5px solid var(--border);
+    background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
+  }
+  .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .tab:hover:not(.active) { border-color: var(--ink); color: var(--ink); }
+
+  .cats { max-width: 1040px; margin: 0 auto 20px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .cat-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500;
+    padding: 4px 12px; border-radius: 999px; border: 1.5px solid var(--border);
+    background: transparent; color: var(--muted); cursor: pointer; transition: all .15s;
+  }
+  .cat-btn.active { border-color: currentColor; }
+  .cat-btn:hover { border-color: var(--ink); color: var(--ink); }
+
+  .count { max-width: 1040px; margin: 0 auto 14px; font-size: 12px; color: var(--muted); }
+
+  .grid {
+    max-width: 1040px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px;
+  }
+
+  .card {
+    background: var(--card-bg); border: 1.5px solid var(--border);
+    border-radius: 12px; overflow: hidden;
+    transition: transform .18s, box-shadow .18s;
+    animation: fadein .28s ease both;
+  }
+  @keyframes fadein { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.07); }
+
+  .card-stripe { height: 4px; }
+  .card-body { padding: 16px 16px 12px; }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 8px; gap: 8px; }
+  .card-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .num { font-size: 11px; font-weight: 500; color: var(--muted); letter-spacing: 0.06em; white-space: nowrap; margin-top: 2px; }
+
+  .type-badge {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 999px; white-space: nowrap;
+  }
+  .type-idiom    { background: #EEF2FF; color: #3730A3; }
+  .type-proverb  { background: #F0FDF4; color: #166534; }
+  .type-phrase   { background: #FFF7ED; color: #9A3412; }
+  .type-slang    { background: #FDF2F8; color: #831843; }
+
+  .cat-badge {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 999px; white-space: nowrap;
+  }
+
+  .expression-title {
+    font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 600;
+    line-height: 1.35; color: var(--ink); margin-bottom: 7px;
+  }
+  .meaning { font-size: 13px; color: #4A4540; line-height: 1.55; margin-bottom: 10px; }
+  .example-block {
+    background: var(--cream); border-left: 2.5px solid var(--border);
+    padding: 7px 11px; border-radius: 0 5px 5px 0;
+    font-size: 12px; font-style: italic; color: var(--muted); line-height: 1.5;
+  }
+
+  .empty { max-width: 1040px; margin: 48px auto; text-align: center; color: var(--muted); font-size: 15px; }
+
+  .legend { max-width: 1040px; margin: 0 auto 20px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--muted); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  @media print {
+    body { background: #fff; padding: 16px; }
+    header { margin-bottom: 20px; }
+    .header-right, .toolbar, .tabs, .cats, .count, .legend { display: none; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .card { break-inside: avoid; box-shadow: none !important; transform: none !important; border: 1px solid #ddd; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1>Idiomatic <em style="font-style:italic;font-weight:400">Expressions</em></h1>
+    <p>Complete Collection · 148 Entries · Idioms, Proverbs, Phrases &amp; Slang</p>
+  </div>
+  <div class="header-right">
+    <button class="btn" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      Print / PDF
+    </button>
+    <button class="btn btn-primary" onclick="downloadHTML()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Download HTML
+    </button>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="search" type="text" placeholder="Search expressions or meanings…" oninput="render()">
+  </div>
+</div>
+
+<div class="tabs" id="type-tabs"></div>
+<div class="cats" id="cat-tabs"></div>
+
+<div class="legend">
+  <span style="font-size:11px;color:var(--muted);font-weight:500">Type:</span>
+  <div class="legend-item"><span class="type-badge type-idiom">Idiom</span> Figurative expression</div>
+  <div class="legend-item"><span class="type-badge type-proverb">Proverb</span> Traditional wisdom</div>
+  <div class="legend-item"><span class="type-badge type-phrase">Phrase</span> Fixed expression</div>
+  <div class="legend-item"><span class="type-badge type-slang">Slang</span> Informal / colloquial</div>
+</div>
+
+<div class="count" id="count"></div>
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty" style="display:none">No expressions match your search.</div>
+
+<script>
+const DATA = [
+  // ── A ──
+  { n:1,   expr:"A blessing in disguise",                       type:"idiom",   cat:"Luck & Fate",      meaning:"Something that seems bad at first but turns out to be good.",                                              example:'"Losing that job was a blessing in disguise — I found a much better one."',                              stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:2,   expr:"A dime a dozen",                               type:"idiom",   cat:"Value",            meaning:"Something very common and of little value.",                                                               example:'"Talented singers are a dime a dozen these days."',                                                    stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:3,   expr:"A piece of cake",                              type:"idiom",   cat:"Difficulty",       meaning:"Something very easy to do.",                                                                               example:'"The exam was a piece of cake — I finished in 20 minutes."',                                          stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:4,   expr:"Actions speak louder than words",              type:"proverb", cat:"Character",        meaning:"What someone does matters more than what they say.",                                                       example:'"He promised to help but never did. Actions speak louder than words."',                               stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:5,   expr:"Add insult to injury",                         type:"idiom",   cat:"Bad Situations",   meaning:"To make an already bad situation even worse.",                                                             example:'"They cancelled my flight, then lost my bag — talk about adding insult to injury!"',                  stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  // ── B ──
+  { n:6,   expr:"Barking up the wrong tree",                    type:"idiom",   cat:"Mistakes",         meaning:"Pursuing a mistaken or misguided course of action.",                                                       example:'"If you think I took your keys, you\'re barking up the wrong tree."',                               stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:7,   expr:"Beat around the bush",                         type:"idiom",   cat:"Communication",    meaning:"Avoiding the main topic; not speaking directly about the issue.",                                          example:'"Stop beating around the bush and just tell me what happened."',                                      stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:8,   expr:"Break a leg",                                  type:"idiom",   cat:"Encouragement",    meaning:"Good luck! (especially said to performers before going on stage).",                                        example:'"You\'re going on stage in five minutes — break a leg!"',                                            stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:9,   expr:"Burn the midnight oil",                        type:"idiom",   cat:"Work & Effort",    meaning:"To work or study very late into the night.",                                                               example:'"She burned the midnight oil to finish her dissertation."',                                           stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:10,  expr:"By the skin of your teeth",                    type:"idiom",   cat:"Luck & Fate",      meaning:"Just barely; with very little margin to spare.",                                                           example:'"I passed the exam by the skin of my teeth — I got 51%."',                                           stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  // ── C ──
+  { n:11,  expr:"Call it a day",                                type:"phrase",  cat:"Work & Effort",    meaning:"To stop working and rest for the remainder of the day.",                                                   example:'"We\'ve done enough for now — let\'s call it a day."',                                               stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:12,  expr:"Caught between a rock and a hard place",       type:"idiom",   cat:"Bad Situations",   meaning:"Facing two equally difficult choices with no easy way out.",                                               example:'"I can\'t afford rent or food right now — I\'m caught between a rock and a hard place."',            stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:13,  expr:"Cut corners",                                  type:"idiom",   cat:"Mistakes",         meaning:"To do something in the cheapest or easiest way, often sacrificing quality.",                               example:'"The builders cut corners and the roof started leaking after a month."',                             stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:14,  expr:"Cry over spilled milk",                        type:"idiom",   cat:"Attitude",         meaning:"To be upset about something that has already happened and cannot be changed.",                             example:'"The deadline passed. No point crying over spilled milk — let\'s move on."',                         stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:15,  expr:"Curiosity killed the cat",                     type:"proverb", cat:"Character",        meaning:"Being too inquisitive can lead to trouble or danger.",                                                     example:'"Don\'t snoop through his messages — curiosity killed the cat."',                                    stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  // ── D ──
+  { n:16,  expr:"Don't count your chickens before they hatch",  type:"proverb", cat:"Caution",          meaning:"Don't assume success before it actually happens.",                                                         example:'"I haven\'t gotten the job offer yet — don\'t count your chickens before they hatch."',              stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:17,  expr:"Don't put all your eggs in one basket",        type:"proverb", cat:"Caution",          meaning:"Don't risk everything on a single venture.",                                                               example:'"Invest in different assets — don\'t put all your eggs in one basket."',                            stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:18,  expr:"Draw the line",                                type:"phrase",  cat:"Boundaries",       meaning:"Set a firm limit on what you will tolerate.",                                                             example:'"I draw the line at working weekends — that\'s my family time."',                                   stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:19,  expr:"Drop in the bucket",                           type:"idiom",   cat:"Value",            meaning:"A very small, insignificant amount compared to what is needed.",                                           example:'"The donation was generous, but it\'s a drop in the bucket for that charity."',                     stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:20,  expr:"Dressed to the nines",                         type:"idiom",   cat:"Appearance",       meaning:"Dressed very elegantly and stylishly.",                                                                   example:'"She arrived at the gala dressed to the nines."',                                                    stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  // ── E ──
+  { n:21,  expr:"Every cloud has a silver lining",              type:"proverb", cat:"Optimism",         meaning:"There is something positive or hopeful in every bad situation.",                                           example:'"I missed the flight, but every cloud has a silver lining — I met my future partner at the gate."', stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:22,  expr:"Eye for an eye",                               type:"phrase",  cat:"Justice",          meaning:"Punishment that is equivalent to the offense committed.",                                                   example:'"He demanded an eye for an eye — justice for what was done to his family."',                        stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  // ── F ──
+  { n:23,  expr:"Face the music",                               type:"idiom",   cat:"Consequences",     meaning:"Accept and deal with the unpleasant consequences of your actions.",                                         example:'"He made the mistake, and now he has to face the music."',                                          stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:24,  expr:"Feeling under the weather",                    type:"idiom",   cat:"Health",           meaning:"Feeling ill or unwell.",                                                                                   example:'"I\'m a bit under the weather today — I think I\'m getting a cold."',                              stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:25,  expr:"Fingers crossed",                              type:"phrase",  cat:"Luck & Fate",      meaning:"Hoping for good luck or a positive outcome.",                                                               example:'"The results come out tomorrow — fingers crossed!"',                                                 stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  // ── G ──
+  { n:26,  expr:"Get out of hand",                              type:"idiom",   cat:"Control",          meaning:"Become uncontrolled or chaotic.",                                                                         example:'"The party got completely out of hand by midnight."',                                               stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:27,  expr:"Get your act together",                        type:"phrase",  cat:"Character",        meaning:"Organize yourself; start behaving in a more responsible way.",                                             example:'"If you want to pass this course, you need to get your act together."',                            stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:28,  expr:"Give someone the cold shoulder",               type:"idiom",   cat:"Relationships",    meaning:"Deliberately ignore someone.",                                                                             example:'"Ever since their argument, she\'s been giving him the cold shoulder."',                            stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  // ── H ──
+  { n:29,  expr:"Hit the nail on the head",                     type:"idiom",   cat:"Communication",    meaning:"Describe exactly what is causing a situation or problem.",                                                   example:'"You hit the nail on the head — that\'s exactly what the issue is."',                             stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:30,  expr:"Hold your horses",                             type:"idiom",   cat:"Caution",          meaning:"Wait a moment; be patient before acting.",                                                                 example:'"Hold your horses — we need to think this through before deciding."',                             stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  // ── I ──
+  { n:31,  expr:"If it isn't broke, don't fix it",              type:"proverb", cat:"Caution",          meaning:"Don't change something that is already working fine.",                                                     example:'"The system runs perfectly — if it isn\'t broke, don\'t fix it."',                               stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:32,  expr:"In hot water",                                 type:"idiom",   cat:"Bad Situations",   meaning:"In trouble or a difficult situation.",                                                                     example:'"He\'s in hot water with his boss after missing three deadlines."',                                stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  // ── J ──
+  { n:33,  expr:"Jump on the bandwagon",                        type:"idiom",   cat:"Trends",           meaning:"Join a popular trend or activity that many others are doing.",                                             example:'"Everyone jumped on the bandwagon when the new social media app launched."',                      stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  // ── K ──
+  { n:34,  expr:"Kick the bucket",                              type:"slang",   cat:"Life & Death",     meaning:"To die (used humorously or informally).",                                                                 example:'"Old Mr. Thompson finally kicked the bucket at the age of 95."',                                  stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:35,  expr:"Know the ropes",                               type:"idiom",   cat:"Experience",       meaning:"Understand how something works; be experienced and knowledgeable.",                                         example:'"She\'s been here for years — she really knows the ropes."',                                      stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  // ── L ──
+  { n:36,  expr:"Let the cat out of the bag",                   type:"idiom",   cat:"Communication",    meaning:"Accidentally reveal a secret.",                                                                           example:'"He let the cat out of the bag about the surprise party."',                                        stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:37,  expr:"Like two peas in a pod",                       type:"idiom",   cat:"Relationships",    meaning:"Very similar to each other; inseparable.",                                                                 example:'"Those two sisters are like two peas in a pod — always together."',                              stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  // ── M ──
+  { n:38,  expr:"Make ends meet",                               type:"idiom",   cat:"Money",            meaning:"To manage financially with limited resources.",                                                             example:'"With two part-time jobs, she was barely making ends meet."',                                      stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:39,  expr:"Miss the boat",                                type:"idiom",   cat:"Opportunities",    meaning:"Miss an opportunity; be too late to take advantage of something.",                                         example:'"He missed the boat on investing early in that startup."',                                         stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  // ── N ──
+  { n:40,  expr:"No pain, no gain",                             type:"proverb", cat:"Work & Effort",    meaning:"You have to work hard and endure difficulty to achieve something worthwhile.",                             example:'"Training hurts every day, but no pain, no gain — you\'ll thank yourself later."',               stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  // ── O ──
+  { n:41,  expr:"Off the hook",                                 type:"idiom",   cat:"Consequences",     meaning:"Freed from blame, responsibility, or an obligation.",                                                     example:'"The charges were dropped — he\'s completely off the hook."',                                    stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:42,  expr:"On thin ice",                                  type:"idiom",   cat:"Bad Situations",   meaning:"In a risky or precarious situation.",                                                                     example:'"After the third warning, he\'s skating on thin ice with his employer."',                         stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  // ── P ──
+  { n:43,  expr:"Pull someone's leg",                           type:"idiom",   cat:"Humour",           meaning:"To joke with or tease someone.",                                                                           example:'"Are you serious about that? Or are you pulling my leg?"',                                         stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:44,  expr:"Put all your eggs in one basket",              type:"proverb", cat:"Caution",          meaning:"Risk everything on a single venture or option.",                                                           example:'"He invested his entire savings in one stock — never put all your eggs in one basket."',          stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  // ── Q ──
+  { n:45,  expr:"Quick on the draw",                            type:"idiom",   cat:"Character",        meaning:"Quick to react or respond to a situation.",                                                               example:'"She\'s quick on the draw — she answered before anyone else could even think."',                 stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  // ── R ──
+  { n:46,  expr:"Read between the lines",                       type:"idiom",   cat:"Communication",    meaning:"Understand the hidden or implied meaning behind what is said.",                                           example:'"Reading between the lines, it\'s clear she wasn\'t happy with the decision."',                 stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:47,  expr:"Right off the bat",                            type:"phrase",  cat:"Time",             meaning:"Immediately; without any delay.",                                                                         example:'"Right off the bat, she knew something was wrong."',                                               stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  // ── S ──
+  { n:48,  expr:"Spill the beans",                              type:"idiom",   cat:"Communication",    meaning:"Reveal secret or confidential information, often unintentionally.",                                       example:'"Don\'t spill the beans about the surprise — it\'s meant to be a secret!"',                      stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:49,  expr:"Steal someone's thunder",                      type:"idiom",   cat:"Relationships",    meaning:"Take attention or credit away from someone else.",                                                         example:'"He announced his own news right after hers — completely stealing her thunder."',               stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:50,  expr:"Straight from the horse's mouth",              type:"idiom",   cat:"Communication",    meaning:"Directly from the original or most reliable source.",                                                     example:'"I heard it straight from the horse\'s mouth — the CEO confirmed it himself."',                  stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  // ── T ──
+  { n:51,  expr:"Take it with a grain of salt",                 type:"idiom",   cat:"Attitude",         meaning:"Don't take it too seriously; be skeptical about it.",                                                     example:'"Take his stories with a grain of salt — he tends to exaggerate."',                               stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:52,  expr:"The ball is in your court",                    type:"idiom",   cat:"Responsibility",   meaning:"It's your decision or responsibility now.",                                                               example:'"I\'ve made my offer — the ball is in your court now."',                                         stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  // ── U ──
+  { n:53,  expr:"Under the weather",                            type:"idiom",   cat:"Health",           meaning:"Feeling ill or unwell.",                                                                                   example:'"She\'s been under the weather all week — probably the flu."',                                    stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:54,  expr:"Up in arms",                                   type:"idiom",   cat:"Emotions",         meaning:"Angry and protesting about something.",                                                                   example:'"The workers were up in arms over the proposed pay cuts."',                                       stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  // ── V ──
+  { n:55,  expr:"Variety is the spice of life",                 type:"proverb", cat:"Optimism",         meaning:"Different experiences make life more interesting and enjoyable.",                                           example:'"Try a new cuisine every week — variety is the spice of life!"',                                  stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  // ── W ──
+  { n:56,  expr:"When pigs fly",                                type:"idiom",   cat:"Impossibility",    meaning:"Something that will never happen.",                                                                       example:'"He\'ll apologise when pigs fly — he never admits he\'s wrong."',                                stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:57,  expr:"Wild goose chase",                             type:"idiom",   cat:"Mistakes",         meaning:"A futile pursuit or hopeless search.",                                                                   example:'"Searching for that file was a wild goose chase — it never existed."',                           stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  // ── Y ──
+  { n:58,  expr:"You can't judge a book by its cover",          type:"proverb", cat:"Character",        meaning:"Don't judge someone or something based solely on appearance.",                                             example:'"He looked scruffy but was brilliant — you can\'t judge a book by its cover."',                  stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  // ── Additional ──
+  { n:59,  expr:"A bird in the hand is worth two in the bush",  type:"proverb", cat:"Caution",          meaning:"It's better to keep what you have than to risk losing it by seeking more.",                               example:'"Take the job offer — a bird in the hand is worth two in the bush."',                            stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:60,  expr:"A penny for your thoughts",                    type:"phrase",  cat:"Communication",    meaning:"Asking someone what they are thinking about.",                                                             example:'"You\'ve been quiet all evening — a penny for your thoughts?"',                                   stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:61,  expr:"All bark and no bite",                         type:"idiom",   cat:"Character",        meaning:"Someone who talks tough but never actually takes action.",                                                 example:'"Don\'t worry about his threats — he\'s all bark and no bite."',                                 stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:62,  expr:"Bite off more than you can chew",              type:"idiom",   cat:"Mistakes",         meaning:"Take on more responsibility or work than you can handle.",                                                 example:'"He bit off more than he could chew by managing three projects at once."',                      stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:63,  expr:"Break the ice",                                type:"idiom",   cat:"Communication",    meaning:"Initiate conversation or ease tension in a social situation.",                                             example:'"He told a joke to break the ice at the beginning of the meeting."',                             stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:64,  expr:"Burning the candle at both ends",              type:"idiom",   cat:"Work & Effort",    meaning:"Working excessively hard without enough rest, leading to exhaustion.",                                     example:'"She\'s been burning the candle at both ends — work all day, study all night."',                stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:65,  expr:"Caught red-handed",                            type:"idiom",   cat:"Consequences",     meaning:"Caught in the act of doing something wrong or illegal.",                                                   example:'"The shoplifter was caught red-handed by the security guard."',                                   stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:66,  expr:"Cut to the chase",                             type:"phrase",  cat:"Communication",    meaning:"Get to the point without wasting time on unnecessary details.",                                           example:'"Let\'s cut to the chase — how much will it cost?"',                                             stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:67,  expr:"Every dog has its day",                        type:"proverb", cat:"Optimism",         meaning:"Everyone will have their moment of success or good fortune at some point.",                               example:'"Keep trying — every dog has its day, and yours will come."',                                     stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:68,  expr:"Falling on deaf ears",                         type:"idiom",   cat:"Communication",    meaning:"When advice or requests are ignored and not listened to.",                                                 example:'"All her warnings fell on deaf ears — nobody listened."',                                         stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:69,  expr:"Get your ducks in a row",                      type:"idiom",   cat:"Work & Effort",    meaning:"Organize yourself and prepare thoroughly for something ahead of time.",                                   example:'"Get your ducks in a row before the investors arrive."',                                           stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:70,  expr:"Hit the ground running",                       type:"phrase",  cat:"Work & Effort",    meaning:"Start an activity with great enthusiasm and energy from the very beginning.",                             example:'"The new manager hit the ground running — she had a plan ready on day one."',                   stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:71,  expr:"In one ear and out the other",                 type:"idiom",   cat:"Communication",    meaning:"When information is not retained; quickly forgotten after hearing it once.",                               example:'"I told him three times, but it goes in one ear and out the other."',                            stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:72,  expr:"Jump through hoops",                           type:"idiom",   cat:"Difficulty",       meaning:"Go through many complicated procedures to achieve something.",                                             example:'"I had to jump through so many hoops just to get a visa."',                                       stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:73,  expr:"Keep your chin up",                            type:"phrase",  cat:"Encouragement",    meaning:"Stay positive and remain optimistic during difficult times.",                                             example:'"I know it\'s hard, but keep your chin up — things will improve."',                              stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:74,  expr:"Leave no stone unturned",                      type:"idiom",   cat:"Work & Effort",    meaning:"Make every possible effort; search thoroughly for solutions.",                                             example:'"The detective left no stone unturned in the investigation."',                                     stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:75,  expr:"Make hay while the sun shines",                type:"proverb", cat:"Opportunities",    meaning:"Take advantage of opportunities while conditions are favourable.",                                         example:'"Sales are booming — make hay while the sun shines and grow the business."',                    stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:76,  expr:"Not playing with a full deck",                 type:"slang",   cat:"Character",        meaning:"Not mentally sound; lacking good judgement or common sense.",                                             example:'"He agreed to that deal? He must not be playing with a full deck."',                             stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:77,  expr:"Out of left field",                            type:"idiom",   cat:"Surprise",         meaning:"Unexpectedly surprising; coming from an unexpected direction.",                                           example:'"His resignation came completely out of left field — nobody saw it coming."',                    stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:78,  expr:"Put your money where your mouth is",           type:"phrase",  cat:"Character",        meaning:"Back up your words with concrete actions.",                                                               example:'"If you believe in the project, put your money where your mouth is."',                           stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:79,  expr:"Raining cats and dogs",                        type:"idiom",   cat:"Weather",          meaning:"Raining very heavily.",                                                                                   example:'"Bring an umbrella — it\'s raining cats and dogs out there."',                                   stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:80,  expr:"See eye to eye",                               type:"idiom",   cat:"Relationships",    meaning:"Agree with someone; share the same opinion.",                                                             example:'"They rarely see eye to eye on business strategy."',                                             stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:81,  expr:"Sink or swim",                                 type:"idiom",   cat:"Consequences",     meaning:"Succeed or fail entirely based on one's own efforts.",                                                   example:'"The boss threw him into the project with no training — sink or swim."',                        stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:82,  expr:"Sit on the fence",                             type:"idiom",   cat:"Attitude",         meaning:"Avoid making a decision or taking a side.",                                                               example:'"Stop sitting on the fence and tell us which option you prefer."',                               stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:83,  expr:"Smell a rat",                                  type:"idiom",   cat:"Suspicion",        meaning:"Suspect that something dishonest or wrong is happening.",                                                 example:'"When the numbers didn\'t add up, I started to smell a rat."',                                   stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:84,  expr:"Speak of the devil",                           type:"phrase",  cat:"Surprise",         meaning:"Said when the person just mentioned appears unexpectedly.",                                               example:'"Speak of the devil — we were just talking about you!"',                                         stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:85,  expr:"Take with a pinch of salt",                    type:"idiom",   cat:"Attitude",         meaning:"View something skeptically; don't take it too seriously.",                                               example:'"Take his statistics with a pinch of salt — he\'s known to exaggerate."',                       stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:86,  expr:"The early bird catches the worm",              type:"proverb", cat:"Work & Effort",    meaning:"Those who act early or promptly have an advantage over others.",                                         example:'"She arrived an hour before everyone else — the early bird catches the worm."',                  stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:87,  expr:"The elephant in the room",                     type:"idiom",   cat:"Communication",    meaning:"An obvious problem or controversial issue that everyone avoids discussing.",                               example:'"Nobody mentioned the budget deficit — it was the elephant in the room."',                       stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:88,  expr:"Throw in the towel",                           type:"idiom",   cat:"Consequences",     meaning:"Give up after repeated failures; admit defeat.",                                                           example:'"After five failed attempts, he finally threw in the towel."',                                   stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:89,  expr:"Turn over a new leaf",                         type:"idiom",   cat:"Character",        meaning:"Make positive changes in your life; start behaving better.",                                             example:'"After rehab, he turned over a new leaf and became a better person."',                          stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:90,  expr:"Under one's thumb",                            type:"idiom",   cat:"Control",          meaning:"Completely under someone else's control or influence.",                                                   example:'"His manager has him completely under her thumb."',                                               stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  // ── Final Set ──
+  { n:91,  expr:"Up against the wall",                          type:"phrase",  cat:"Bad Situations",   meaning:"In a very difficult situation with no easy way out.",                                                     example:'"With debts piling up, the company was up against the wall."',                                   stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:92,  expr:"Walking on eggshells",                         type:"idiom",   cat:"Relationships",    meaning:"Being extremely cautious around someone to avoid upsetting them.",                                       example:'"Everyone walks on eggshells around him when he\'s in a bad mood."',                            stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:93,  expr:"What goes around comes around",                type:"proverb", cat:"Justice",          meaning:"Actions — good or bad — have consequences that eventually return to you.",                               example:'"He treated everyone poorly for years — what goes around comes around."',                        stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:94,  expr:"When it rains, it pours",                      type:"proverb", cat:"Bad Situations",   meaning:"Problems or misfortunes tend to come all at once.",                                                       example:'"First the car broke down, then I lost my wallet — when it rains, it pours."',                  stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:95,  expr:"You can't have your cake and eat it too",      type:"proverb", cat:"Choices",          meaning:"You cannot enjoy both sides of a situation simultaneously; you must choose.",                             example:'"You want the salary but not the responsibility? You can\'t have your cake and eat it too."',   stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:96,  expr:"Your guess is as good as mine",                type:"phrase",  cat:"Knowledge",        meaning:"I don't know either — we're equally uncertain.",                                                         example:'"Where did he go? Your guess is as good as mine."',                                               stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:97,  expr:"All's fair in love and war",                   type:"proverb", cat:"Choices",          meaning:"In certain situations (love, competition), any action is considered acceptable.",                       example:'"He stole her number from a mutual friend — all\'s fair in love and war."',                     stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:98,  expr:"Bite the dust",                                type:"slang",   cat:"Life & Death",     meaning:"To fail or die.",                                                                                         example:'"That startup bit the dust after just six months."',                                             stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:99,  expr:"Burn bridges",                                 type:"idiom",   cat:"Relationships",    meaning:"Permanently destroy a relationship or opportunity.",                                                       example:'"Don\'t burn bridges with your old employer — you never know when you\'ll need them."',        stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:100, expr:"Caught off guard",                             type:"phrase",  cat:"Surprise",         meaning:"Unprepared for an unexpected event.",                                                                     example:'"The question caught her completely off guard during the interview."',                           stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:101, expr:"Chasing rainbows",                             type:"idiom",   cat:"Attitude",         meaning:"Pursuing unrealistic or impossible goals.",                                                               example:'"He\'s been chasing rainbows with that invention for years."',                                   stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:102, expr:"Cold feet",                                    type:"idiom",   cat:"Emotions",         meaning:"Nervousness or doubt before an important event or decision.",                                             example:'"He got cold feet right before the wedding ceremony."',                                           stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:103, expr:"Cross that bridge when you come to it",        type:"phrase",  cat:"Attitude",         meaning:"Deal with problems only when they actually arise, not in advance.",                                       example:'"Don\'t worry about the next stage yet — cross that bridge when you come to it."',             stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:104, expr:"Cut loose",                                    type:"phrase",  cat:"Freedom",          meaning:"Let go; become free from restrictions or obligations.",                                                   example:'"After exams, we finally cut loose and had a great night out."',                                 stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:105, expr:"Devil's advocate",                             type:"phrase",  cat:"Communication",    meaning:"Argue against something even if you personally agree with it, to test the argument.",                   example:'"Let me play devil\'s advocate — what if the plan actually fails?"',                            stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:106, expr:"Fly off the handle",                           type:"idiom",   cat:"Emotions",         meaning:"React suddenly and angrily; lose one's temper.",                                                         example:'"He flies off the handle at the slightest criticism."',                                           stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:107, expr:"Go down in flames",                            type:"idiom",   cat:"Consequences",     meaning:"Fail spectacularly and publicly.",                                                                       example:'"The product launch went down in flames — nothing worked as planned."',                         stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:108, expr:"Hit rock bottom",                              type:"idiom",   cat:"Emotions",         meaning:"Reach the lowest possible point emotionally or financially.",                                             example:'"He hit rock bottom after losing his job, his home, and his family."',                          stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:109, expr:"In for a penny, in for a pound",               type:"proverb", cat:"Choices",          meaning:"If you're going to take a risk at all, you might as well go all in.",                                   example:'"We\'ve already invested this much — in for a penny, in for a pound."',                         stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:110, expr:"Jump ship",                                    type:"idiom",   cat:"Work & Effort",    meaning:"Abandon an organization or situation suddenly.",                                                           example:'"Several key employees jumped ship right before the company collapsed."',                        stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:111, expr:"Keep your friends close but enemies closer",   type:"proverb", cat:"Suspicion",        meaning:"Know your enemies well so you can be prepared for what they might do.",                                 example:'"He invited his rival to lunch — keep your friends close but enemies closer."',                 stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:112, expr:"Let sleeping dogs lie",                        type:"proverb", cat:"Caution",          meaning:"Avoid stirring up old trouble or reopening resolved issues.",                                             example:'"Don\'t bring up that argument again — let sleeping dogs lie."',                                 stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:113, expr:"Make no bones about it",                       type:"phrase",  cat:"Communication",    meaning:"Speak plainly and directly without hesitation.",                                                           example:'"She made no bones about it — she hated the new policy."',                                       stripe:"#378ADD", bb:"#E6F1FB", bt:"#042C53" },
+  { n:114, expr:"Missed the boat / bus",                        type:"idiom",   cat:"Opportunities",    meaning:"Missed an opportunity; arrived or acted too late.",                                                       example:'"He missed the boat on buying that property when prices were low."',                             stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:115, expr:"No use crying over spilled milk",              type:"proverb", cat:"Attitude",         meaning:"Don't waste time worrying about things that can't be changed.",                                         example:'"The project failed, but no use crying over spilled milk — start fresh."',                      stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:116, expr:"On cloud nine",                                type:"idiom",   cat:"Emotions",         meaning:"Extremely happy; in a state of pure joy and elation.",                                                   example:'"She was on cloud nine after getting engaged."',                                                   stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:117, expr:"Out of pocket",                                type:"phrase",  cat:"Availability",     meaning:"Unavailable for contact; unreachable.",                                                                   example:'"I\'ll be out of pocket all week — contact my assistant."',                                     stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:118, expr:"Paint yourself into a corner",                 type:"idiom",   cat:"Mistakes",         meaning:"Create an impossible or inescapable situation for yourself.",                                             example:'"By making all those promises, he painted himself into a corner."',                              stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:119, expr:"Penny pincher",                                type:"slang",   cat:"Money",            meaning:"Someone who is extremely stingy or careful with money.",                                                 example:'"He\'s such a penny pincher — he won\'t even tip at restaurants."',                             stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:120, expr:"Pull strings",                                 type:"idiom",   cat:"Influence",        meaning:"Use personal influence or connections to achieve a result.",                                               example:'"She pulled strings to get her son into the best school in the city."',                         stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:121, expr:"Sitting pretty",                               type:"phrase",  cat:"Luck & Fate",      meaning:"In a very comfortable or favourable position.",                                                           example:'"With a guaranteed contract, they\'re sitting pretty for the next two years."',                stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:122, expr:"Sow wild oats",                                type:"idiom",   cat:"Youth",            meaning:"Engage in youthful indiscretions or irresponsible behaviour before settling down.",                     example:'"He spent his twenties sowing wild oats before finally settling down."',                        stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:123, expr:"Tied up in knots",                             type:"idiom",   cat:"Emotions",         meaning:"Confused, anxious, or stressed about a situation.",                                                       example:'"She was tied up in knots before her first public speech."',                                     stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:124, expr:"Tighten one's belt",                           type:"idiom",   cat:"Money",            meaning:"Spend less money due to economic hardship or reduced income.",                                           example:'"With rising prices, most families had to tighten their belts."',                                stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:125, expr:"Took the wind out of sails",                   type:"idiom",   cat:"Emotions",         meaning:"Disheartened someone by an unexpected setback or disappointment.",                                       example:'"The negative review really took the wind out of her sails."',                                   stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:126, expr:"Turn back the clock",                          type:"idiom",   cat:"Time",             meaning:"Return things to how they were before; wish to restore a previous state.",                               example:'"If I could turn back the clock, I\'d have studied harder."',                                   stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:127, expr:"Under wraps",                                  type:"phrase",  cat:"Communication",    meaning:"Kept secret; not publicly revealed.",                                                                     example:'"The new product is still under wraps until the official launch."',                              stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:128, expr:"Walk down memory lane",                        type:"phrase",  cat:"Time",             meaning:"Reminiscing about fond or significant past events.",                                                     example:'"Looking at those old photos was a real walk down memory lane."',                               stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:129, expr:"Wipe the slate clean",                         type:"idiom",   cat:"Character",        meaning:"Start fresh, without past mistakes or wrongdoings affecting the future.",                               example:'"They agreed to wipe the slate clean and rebuild their friendship."',                           stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:130, expr:"You can't teach an old dog new tricks",        type:"proverb", cat:"Character",        meaning:"It is difficult for older people to learn new skills or change habits.",                               example:'"He refuses to use a smartphone — you can\'t teach an old dog new tricks."',                   stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  // ── Final Count ──
+  { n:131, expr:"A house divided against itself cannot stand",  type:"proverb", cat:"Unity",            meaning:"Internal conflict will lead to failure; unity is essential for strength.",                               example:'"The team kept arguing — a house divided against itself cannot stand."',                         stripe:"#E24B4A", bb:"#FCEBEB", bt:"#501313" },
+  { n:132, expr:"All hands on deck",                            type:"phrase",  cat:"Work & Effort",    meaning:"Everyone must help and contribute — a call for all available people.",                                 example:'"The deadline is tomorrow — all hands on deck!"',                                                 stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:133, expr:"Barking dogs seldom bite",                     type:"proverb", cat:"Character",        meaning:"Those who make the loudest threats rarely follow through with action.",                                 example:'"Ignore his shouting — barking dogs seldom bite."',                                               stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:134, expr:"Birds of a feather flock together",            type:"proverb", cat:"Relationships",    meaning:"People with similar interests, values, or characters tend to associate with each other.",               example:'"They both love extreme sports — birds of a feather flock together."',                          stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:135, expr:"Can't see the forest for the trees",           type:"idiom",   cat:"Attitude",         meaning:"Too focused on small details to see the bigger picture.",                                                 example:'"You\'re obsessing over fonts — you can\'t see the forest for the trees."',                    stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:136, expr:"Don't bite the hand that feeds you",           type:"proverb", cat:"Relationships",    meaning:"Don't harm or disrespect the person or entity that supports you.",                                     example:'"Criticising your sponsor publicly? Don\'t bite the hand that feeds you."',                    stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:137, expr:"Every rose has its thorn",                     type:"proverb", cat:"Life & Fate",      meaning:"Every good or beautiful thing has its own drawbacks or difficulties.",                                 example:'"The job pays well but has long hours — every rose has its thorn."',                           stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:138, expr:"Fool me once, shame on you; fool me twice, shame on me", type:"proverb", cat:"Caution", meaning:"After being deceived once, it is your own fault if you allow it to happen again.", example:'"He lied to me again? Fool me once, shame on you — fool me twice, shame on me."',         stripe:"#D85A30", bb:"#FAECE7", bt:"#4A1B0C" },
+  { n:139, expr:"Good things come to those who wait",           type:"proverb", cat:"Patience",         meaning:"Patience is eventually rewarded; good outcomes take time.",                                               example:'"The visa finally came through — good things come to those who wait."',                         stripe:"#1D9E75", bb:"#E1F5EE", bt:"#085041" },
+  { n:140, expr:"Haste makes waste",                            type:"proverb", cat:"Caution",          meaning:"Rushing or acting too quickly leads to mistakes and poor results.",                                     example:'"Check your work before submitting — haste makes waste."',                                       stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:141, expr:"Killing time",                                 type:"phrase",  cat:"Time",             meaning:"Passing time while waiting for something; occupying oneself with unimportant tasks.",                 example:'"He was killing time at the airport by reading a magazine."',                                   stripe:"#888780", bb:"#F1EFE8", bt:"#2C2C2A" },
+  { n:142, expr:"Might as well be hanged for a sheep as a lamb",type:"proverb", cat:"Choices",          meaning:"If you're already in trouble, you might as well make it worthwhile and go all in.",                   example:'"We\'re already late — might as well be hanged for a sheep as a lamb and have dessert."',     stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:143, expr:"Nail it",                                      type:"slang",   cat:"Success",          meaning:"Accurately and perfectly accomplish something.",                                                           example:'"She nailed the presentation — everyone was impressed."',                                         stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:144, expr:"Nobody's perfect",                             type:"phrase",  cat:"Character",        meaning:"Everyone makes mistakes; no one is without flaws.",                                                     example:'"I forgot the anniversary — but nobody\'s perfect, right?"',                                   stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+  { n:145, expr:"Shooting fish in a barrel",                    type:"idiom",   cat:"Difficulty",       meaning:"An extremely easy task requiring very little effort.",                                                   example:'"Selling to those customers was like shooting fish in a barrel."',                              stripe:"#639922", bb:"#EAF3DE", bt:"#173404" },
+  { n:146, expr:"It takes two to tango",                        type:"proverb", cat:"Responsibility",   meaning:"Both parties involved in a situation share responsibility.",                                             example:'"Don\'t blame only her — it takes two to tango."',                                               stripe:"#D4537E", bb:"#FBEAF0", bt:"#4B1528" },
+  { n:147, expr:"Tongue-in-cheek",                              type:"phrase",  cat:"Humour",           meaning:"Not meant seriously; said or done with humorous irony.",                                               example:'"His speech was tongue-in-cheek — he was joking the whole time."',                              stripe:"#BA7517", bb:"#FAEEDA", bt:"#633806" },
+  { n:148, expr:"A leopard can't change its spots",             type:"proverb", cat:"Character",        meaning:"A person's fundamental nature or character cannot easily be changed.",                                 example:'"He promised to be different but relapsed — a leopard can\'t change its spots."',              stripe:"#7F77DD", bb:"#EEEDFE", bt:"#26215C" },
+];
+
+const TYPES = ['All','idiom','proverb','phrase','slang'];
+const CATS  = ['All',...[...new Set(DATA.map(d=>d.cat))].sort()];
+let activeType = 'All';
+let activeCat  = 'All';
+
+function renderTypeTabs(){
+  document.getElementById('type-tabs').innerHTML = TYPES.map(t=>`
+    <button class="tab ${t===activeType?'active':''}" onclick="setType('${t}')">
+      ${t==='All'?'All Types':t.charAt(0).toUpperCase()+t.slice(1)+'s'}
+      <span style="opacity:.6;font-size:10px">(${t==='All'?DATA.length:DATA.filter(d=>d.type===t).length})</span>
+    </button>`).join('');
+}
+
+function renderCatTabs(){
+  document.getElementById('cat-tabs').innerHTML = CATS.map(c=>`
+    <button class="cat-btn ${c===activeCat?'active':''}" onclick="setCat('${c}')"
+      style="${c===activeCat?'border-color:var(--accent);color:var(--accent)':''}"
+    >${c}</button>`).join('');
+}
+
+function setType(t){ activeType=t; activeCat='All'; renderTypeTabs(); renderCatTabs(); render(); }
+function setCat(c){ activeCat=c; renderCatTabs(); render(); }
+
+function render(){
+  const q = document.getElementById('search').value.toLowerCase();
+  const list = DATA.filter(d=>
+    (activeType==='All'||d.type===activeType)&&
+    (activeCat==='All'||d.cat===activeCat)&&
+    (!q||d.expr.toLowerCase().includes(q)||d.meaning.toLowerCase().includes(q)||d.cat.toLowerCase().includes(q))
+  );
+  document.getElementById('count').textContent=`Showing ${list.length} of ${DATA.length} expressions`;
+  document.getElementById('empty').style.display=list.length?'none':'block';
+  document.getElementById('grid').innerHTML=list.map((d,i)=>`
+    <div class="card" style="animation-delay:${Math.min(i,20)*30}ms">
+      <div class="card-stripe" style="background:${d.stripe}"></div>
+      <div class="card-body">
+        <div class="card-top">
+          <span class="num">#${String(d.n).padStart(3,'0')}</span>
+          <div class="card-meta">
+            <span class="type-badge type-${d.type}">${d.type}</span>
+            <span class="cat-badge" style="background:${d.bb};color:${d.bt}">${d.cat}</span>
+          </div>
+        </div>
+        <div class="expression-title">"${d.expr}"</div>
+        <div class="meaning">${d.meaning}</div>
+        <div class="example-block">${d.example}</div>
+      </div>
+    </div>`).join('');
+}
+
+function downloadHTML(){
+  const blob=new Blob([document.documentElement.outerHTML],{type:'text/html;charset=utf-8'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='idiom_expressions_complete_1-148.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+renderTypeTabs(); renderCatTabs(); render();
+</script>
+</body>
+</html>
