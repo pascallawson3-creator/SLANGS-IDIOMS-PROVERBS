@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdiomVault — Review</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-logo">IdiomVault <span>by BODY</span></div>
+  <div class="nav-links">
+    <a href="index.html"    class="nav-link"><span class="nl-icon">🃏</span><span class="nl-text">Cards</span></a>
+    <a href="quiz.html"     class="nav-link"><span class="nl-icon">⚡</span><span class="nl-text">Quiz</span></a>
+    <a href="review.html"   class="nav-link active"><span class="nl-icon">🔁</span><span class="nl-text">Review</span></a>
+    <a href="progress.html" class="nav-link"><span class="nl-icon">📊</span><span class="nl-text">Progress</span></a>
+    <a href="challenge.html" class="nav-link"><span class="nl-icon">🧠</span><span class="nl-text">Challenge</span></a>
+  </div>
+  <div class="nav-xp">
+    <div class="streak-pill" id="navStreak">🔥 0</div>
+    <div class="xp-pill" id="navXP">⭐ 0 XP</div>
+  </div>
+</nav>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="page-hero">
+      <h1 class="page-hero-title"><em>Review</em> Mode</h1>
+      <p class="page-hero-sub">Expressions you marked for review</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-strip" style="margin-bottom:28px;">
+      <div class="stat-item">
+        <span class="stat-val" id="reviewCount">0</span>
+        <span class="stat-lbl">To Review</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val" id="learnedCount">0</span>
+        <span class="stat-lbl">Learned</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-val" id="totalCount">198</span>
+        <span class="stat-lbl">Total</span>
+      </div>
+    </div>
+
+    <!-- Review list -->
+    <div id="reviewList"></div>
+
+    <!-- Empty state -->
+    <div class="review-empty" id="reviewEmpty" style="display:none;">
+      <div class="review-empty-icon">🎯</div>
+      <div class="review-empty-text">Nothing to review!</div>
+      <div class="review-empty-sub">
+        When you tap "Review Again" on a flashcard or get a quiz answer wrong,<br>
+        expressions appear here.
+      </div>
+      <div style="margin-top:28px; display:flex; flex-direction:column; gap:10px; align-items:center;">
+        <a href="index.html" class="btn btn-primary btn-lg">🃏 Start Flashcards</a>
+        <a href="quiz.html"  class="btn btn-ghost btn-lg">⚡ Take a Quiz</a>
+      </div>
+    </div>
+
+    <!-- Clear all -->
+    <div id="clearRow" style="display:none; text-align:center; padding-bottom:48px;">
+      <button class="btn btn-ghost" onclick="clearAll()">🗑️ Clear All Reviewed</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ─── INIT ─── */
+let state = getState();
+renderNav();
+renderReview();
+
+/* ─── RENDER REVIEW LIST ─── */
+function renderReview() {
+  const list = document.getElementById('reviewList');
+  const empty = document.getElementById('reviewEmpty');
+  const clearRow = document.getElementById('clearRow');
+
+  const items = DATA.filter(d => state.difficult.has(d.n));
+
+  document.getElementById('reviewCount').textContent  = items.length;
+  document.getElementById('learnedCount').textContent = state.learned.size;
+  document.getElementById('totalCount').textContent   = DATA.length;
+
+  if (!items.length) {
+    list.innerHTML = '';
+    empty.style.display = 'block';
+    clearRow.style.display = 'none';
+    return;
+  }
+
+  empty.style.display    = 'none';
+  clearRow.style.display = 'block';
+
+  list.innerHTML = items.map((d, i) => {
+    const col = typeColor(d.type);
+    const typeClass = 'type-' + (d.type === 'phrasal verb' ? 'phrasal' : d.type);
+    return `
+    <div class="review-card anim-fadeup" id="rcard-${d.n}" style="animation-delay:${Math.min(i,12)*30}ms">
+      <div class="review-card-bar" style="background:${col}"></div>
+      <div class="review-card-body">
+        <div class="rc-header">
+          <div>
+            <span class="type-badge ${typeClass}" style="margin-bottom:8px;display:inline-block;">${d.type}</span>
+            <div class="rc-expr">"${d.expr}"</div>
+          </div>
+          <button class="rc-remove" title="Remove from review" onclick="removeItem(${d.n})">✕</button>
+        </div>
+        <div class="rc-meaning">${d.meaning}</div>
+        <div class="rc-example">${d.example}</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">
+          <button class="btn btn-correct" onclick="markLearned(${d.n})">✓ I Know This</button>
+          <button class="btn btn-ghost"   onclick="keepForLater(${d.n})">↩ Keep</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ─── MARK LEARNED ─── */
+function markLearned(n) {
+  state.learned.add(n);
+  state.difficult.delete(n);
+  state.xp += 10;
+  saveState(state);
+  renderNav();
+  showToast('✓ Marked as learned! +10 XP');
+  animateRemove(n);
+}
+
+/* ─── KEEP FOR LATER ─── */
+function keepForLater(n) {
+  showToast('Kept in review list');
+}
+
+/* ─── REMOVE FROM REVIEW ─── */
+function removeItem(n) {
+  state.difficult.delete(n);
+  saveState(state);
+  animateRemove(n);
+}
+
+/* ─── ANIMATE REMOVE ─── */
+function animateRemove(n) {
+  const el = document.getElementById('rcard-' + n);
+  if (el) {
+    el.style.transition = 'opacity 0.3s, transform 0.3s';
+    el.style.opacity = '0';
+    el.style.transform = 'translateX(40px)';
+    setTimeout(() => renderReview(), 320);
+  }
+}
+
+/* ─── CLEAR ALL ─── */
+function clearAll() {
+  if (!confirm('Remove all expressions from review list?')) return;
+  state.difficult.clear();
+  saveState(state);
+  renderReview();
+  showToast('Review list cleared');
+}
+
+/* ─── RENDER NAV ─── */
+function renderNav() {
+  document.getElementById('navStreak').textContent = '🔥 ' + state.streak;
+  document.getElementById('navXP').textContent     = '⭐ ' + state.xp + ' XP';
+}
+
+/* ─── TOAST ─── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>

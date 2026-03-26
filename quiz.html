@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdiomVault — Quiz</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-logo">IdiomVault <span>by BODY</span></div>
+  <div class="nav-links">
+    <a href="index.html"    class="nav-link"><span class="nl-icon">🃏</span><span class="nl-text">Cards</span></a>
+    <a href="quiz.html"     class="nav-link active"><span class="nl-icon">⚡</span><span class="nl-text">Quiz</span></a>
+    <a href="review.html"   class="nav-link"><span class="nl-icon">🔁</span><span class="nl-text">Review</span></a>
+    <a href="progress.html" class="nav-link"><span class="nl-icon">📊</span><span class="nl-text">Progress</span></a>
+    <a href="challenge.html" class="nav-link"><span class="nl-icon">🧠</span><span class="nl-text">Challenge</span></a>
+  </div>
+  <div class="nav-xp">
+    <div class="streak-pill" id="navStreak">🔥 0</div>
+    <div class="xp-pill" id="navXP">⭐ 0 XP</div>
+  </div>
+</nav>
+
+<!-- ═══ XP POP ═══ -->
+<div class="xp-pop" id="xpPop">+10 XP</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="page-hero">
+      <h1 class="page-hero-title"><em>Quiz</em> Mode</h1>
+      <p class="page-hero-sub">Pick the correct meaning for each expression</p>
+    </div>
+
+    <!-- Type filter tabs -->
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab on" data-type="All">All</button>
+      <button class="filter-tab" data-type="idiom">Idiom</button>
+      <button class="filter-tab" data-type="proverb">Proverb</button>
+      <button class="filter-tab" data-type="slang">Slang</button>
+      <button class="filter-tab" data-type="phrasal verb">Phrasal Verb</button>
+    </div>
+
+    <!-- Score bar -->
+    <div class="quiz-score-bar">
+      <div>
+        <div class="quiz-score-label">SCORE</div>
+        <div class="quiz-score-val"><span id="scoreCorrect">0</span> / <span id="scoreTotal">0</span></div>
+      </div>
+      <div style="text-align:right;">
+        <div class="quiz-score-label">STREAK</div>
+        <div class="quiz-score-val" id="quizStreak">0 🔥</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="quiz-score-label">XP EARNED</div>
+        <div class="quiz-score-val" id="quizXP" style="color:var(--accent)">0 ⭐</div>
+      </div>
+    </div>
+
+    <!-- Progress through quiz -->
+    <div class="deck-info" style="margin-bottom:8px;">
+      <span id="qProgress">Question 1 of 10</span>
+      <span id="qAccuracy"></span>
+    </div>
+    <div class="progress-track" style="margin-bottom:20px;">
+      <div class="progress-fill" id="quizProgressFill" style="width:10%"></div>
+    </div>
+
+    <!-- Question card -->
+    <div id="quizArea">
+      <div class="quiz-question-card anim-fadeup">
+        <div class="quiz-q-bar" id="qBar"></div>
+        <div class="quiz-q-inner">
+          <div class="quiz-label">WHAT DOES THIS MEAN?</div>
+          <div class="quiz-question" id="qExpr">Loading…</div>
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div class="quiz-options" id="quizOptions"></div>
+
+      <!-- Feedback -->
+      <div class="quiz-feedback" id="quizFeedback">
+        <div class="qf-result" id="qfResult"></div>
+        <div class="qf-answer" id="qfAnswer"></div>
+      </div>
+
+      <!-- Next button (shown after answer) -->
+      <button class="btn btn-primary btn-full btn-lg" id="nextBtn"
+              style="display:none; margin-bottom:48px;" onclick="nextQuestion()">
+        Next Question →
+      </button>
+    </div>
+
+    <!-- End screen -->
+    <div class="quiz-end" id="quizEnd">
+      <div class="quiz-end-emoji" id="endEmoji">🎉</div>
+      <div class="quiz-end-title" id="endTitle">Well done!</div>
+      <div class="quiz-end-score" id="endScore">
+        You scored <strong id="endScoreVal">0/10</strong>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px; max-width:340px; margin:0 auto 48px;">
+        <button class="btn btn-primary btn-full btn-lg" onclick="restartQuiz()">🔄 Play Again</button>
+        <a href="progress.html" class="btn btn-ghost btn-full btn-lg">📊 See Progress</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ─── QUIZ CONFIG ─── */
+const QUIZ_LEN  = 10;   // questions per round
+const OPTS_CNT  = 4;    // choices per question
+
+/* ─── STATE ─── */
+let state       = getState();
+let pool        = [...DATA];   // active pool (can be filtered)
+let questions   = [];          // generated question set
+let qIdx        = 0;
+let scoreCorr   = 0;
+let scoreTotal  = 0;
+let xpEarned    = 0;
+let quizStreak  = 0;
+let activeType  = 'All';
+let answered    = false;
+
+/* ─── INIT ─── */
+(function init() {
+  state = updateStreak(state);
+  saveState(state);
+  renderNav();
+  setupFilterTabs();
+  buildQuiz();
+})();
+
+/* ─── FILTER TABS ─── */
+function setupFilterTabs() {
+  document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      activeType = btn.dataset.type;
+      pool = activeType === 'All' ? [...DATA] : DATA.filter(d => d.type === activeType);
+      if (pool.length < OPTS_CNT) {
+        showToast('⚠️ Not enough entries in this category');
+        return;
+      }
+      restartQuiz();
+    });
+  });
+}
+
+/* ─── BUILD QUIZ ─── */
+function buildQuiz() {
+  pool = activeType === 'All' ? [...DATA] : DATA.filter(d => d.type === activeType);
+  // Shuffle and take up to QUIZ_LEN
+  const shuffled = shuffle(pool);
+  questions = shuffled.slice(0, Math.min(QUIZ_LEN, shuffled.length));
+  qIdx        = 0;
+  scoreCorr   = 0;
+  scoreTotal  = 0;
+  xpEarned    = 0;
+  quizStreak  = 0;
+  answered    = false;
+
+  document.getElementById('quizEnd').classList.remove('show');
+  document.getElementById('quizArea').style.display = 'block';
+  renderQuestion();
+  updateScoreBar();
+}
+
+/* ─── RENDER QUESTION ─── */
+function renderQuestion() {
+  answered = false;
+  const q = questions[qIdx];
+  const col = typeColor(q.type);
+
+  document.getElementById('qBar').style.background = col;
+  document.getElementById('qExpr').textContent = '"' + q.expr + '"';
+
+  // Build 4 options: correct + 3 random distractors from pool
+  const distractors = shuffle(pool.filter(d => d.n !== q.n)).slice(0, OPTS_CNT - 1);
+  const opts = shuffle([q, ...distractors]);
+
+  // Render options
+  const container = document.getElementById('quizOptions');
+  container.innerHTML = '';
+  opts.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt.meaning;
+    btn.dataset.n = opt.n;
+    btn.addEventListener('click', () => handleAnswer(opt.n === q.n, btn, q));
+    container.appendChild(btn);
+  });
+
+  // Hide feedback + next btn
+  document.getElementById('quizFeedback').classList.remove('show');
+  document.getElementById('nextBtn').style.display = 'none';
+
+  // Progress
+  const pct = Math.round(((qIdx + 1) / questions.length) * 100);
+  document.getElementById('qProgress').textContent = `Question ${qIdx + 1} of ${questions.length}`;
+  document.getElementById('quizProgressFill').style.width = pct + '%';
+
+  // Accuracy
+  const acc = scoreTotal > 0 ? Math.round((scoreCorr / scoreTotal) * 100) : '';
+  document.getElementById('qAccuracy').textContent = acc ? `${acc}% accuracy` : '';
+
+  // Animate
+  const qCard = document.querySelector('.quiz-question-card');
+  if (qCard) {
+    qCard.classList.remove('anim-fadeup');
+    void qCard.offsetWidth;
+    qCard.classList.add('anim-fadeup');
+  }
+}
+
+/* ─── HANDLE ANSWER ─── */
+function handleAnswer(isCorrect, clickedBtn, q) {
+  if (answered) return;
+  answered = true;
+  scoreTotal++;
+
+  // Highlight all options
+  document.querySelectorAll('.quiz-opt').forEach(btn => {
+    btn.disabled = true;
+    const item = DATA.find(d => d.n === parseInt(btn.dataset.n));
+    if (item && item.n === q.n) btn.classList.add('correct');
+  });
+  if (!isCorrect) clickedBtn.classList.add('wrong');
+
+  // Feedback
+  const fb = document.getElementById('quizFeedback');
+  const res = document.getElementById('qfResult');
+  const ans = document.getElementById('qfAnswer');
+  fb.classList.add('show');
+
+  if (isCorrect) {
+    scoreCorr++;
+    quizStreak++;
+    xpEarned += 10;
+    state.xp  += 10;
+    // Bonus XP for streak
+    if (quizStreak % 3 === 0 && quizStreak > 0) {
+      state.xp += 5;
+      xpEarned += 5;
+      showXpPop('+15 XP 🔥');
+    } else {
+      showXpPop('+10 XP');
+    }
+    res.className = 'qf-result ok';
+    res.textContent = '✓ Correct!';
+    ans.innerHTML = `<strong>${q.expr}</strong> — ${q.meaning}`;
+    state.learned.add(q.n);
+    state.difficult.delete(q.n);
+  } else {
+    quizStreak = 0;
+    res.className = 'qf-result bad';
+    res.textContent = '✗ Not quite…';
+    ans.innerHTML = `The correct meaning: <strong>${q.meaning}</strong>`;
+    state.difficult.add(q.n);
+  }
+
+  saveState(state);
+  renderNav();
+  updateScoreBar();
+
+  document.getElementById('nextBtn').style.display = 'flex';
+}
+
+/* ─── NEXT QUESTION ─── */
+function nextQuestion() {
+  qIdx++;
+  if (qIdx >= questions.length) {
+    showEndScreen();
+  } else {
+    renderQuestion();
+  }
+}
+
+/* ─── END SCREEN ─── */
+function showEndScreen() {
+  document.getElementById('quizArea').style.display = 'none';
+  const end = document.getElementById('quizEnd');
+  end.classList.add('show');
+
+  const pct = Math.round((scoreCorr / questions.length) * 100);
+  let emoji = '😓', title = 'Keep practising!';
+  if (pct >= 90) { emoji = '🏆'; title = 'Outstanding!'; }
+  else if (pct >= 70) { emoji = '🎉'; title = 'Great work!'; }
+  else if (pct >= 50) { emoji = '👍'; title = 'Not bad!'; }
+
+  document.getElementById('endEmoji').textContent = emoji;
+  document.getElementById('endTitle').textContent  = title;
+  document.getElementById('endScoreVal').textContent = `${scoreCorr}/${questions.length}  (+${xpEarned} XP)`;
+}
+
+/* ─── RESTART ─── */
+function restartQuiz() { buildQuiz(); }
+
+/* ─── UPDATE SCORE BAR ─── */
+function updateScoreBar() {
+  document.getElementById('scoreCorrect').textContent = scoreCorr;
+  document.getElementById('scoreTotal').textContent   = scoreTotal;
+  document.getElementById('quizStreak').textContent   = quizStreak + ' 🔥';
+  document.getElementById('quizXP').textContent       = xpEarned + ' ⭐';
+}
+
+/* ─── RENDER NAV ─── */
+function renderNav() {
+  document.getElementById('navStreak').textContent = '🔥 ' + state.streak;
+  document.getElementById('navXP').textContent     = '⭐ ' + state.xp + ' XP';
+}
+
+/* ─── TOAST ─── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+/* ─── XP POP ─── */
+function showXpPop(msg) {
+  const el = document.getElementById('xpPop');
+  el.textContent = msg;
+  el.classList.remove('fly');
+  void el.offsetWidth;
+  el.classList.add('fly');
+}
+
+/* ─── KEYBOARD ─── */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === 'ArrowRight') {
+    if (answered) { e.preventDefault(); nextQuestion(); }
+  }
+});
+</script>
+</body>
+</html>

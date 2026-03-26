@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdiomVault — Progress</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-logo">IdiomVault <span>by BODY</span></div>
+  <div class="nav-links">
+    <a href="index.html"    class="nav-link"><span class="nl-icon">🃏</span><span class="nl-text">Cards</span></a>
+    <a href="quiz.html"     class="nav-link"><span class="nl-icon">⚡</span><span class="nl-text">Quiz</span></a>
+    <a href="review.html"   class="nav-link"><span class="nl-icon">🔁</span><span class="nl-text">Review</span></a>
+    <a href="progress.html" class="nav-link active"><span class="nl-icon">📊</span><span class="nl-text">Progress</span></a>
+    <a href="challenge.html" class="nav-link"><span class="nl-icon">🧠</span><span class="nl-text">Challenge</span></a>
+  </div>
+  <div class="nav-xp">
+    <div class="streak-pill" id="navStreak">🔥 0</div>
+    <div class="xp-pill" id="navXP">⭐ 0 XP</div>
+  </div>
+</nav>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+  <div class="container">
+
+    <!-- Hero -->
+    <div class="page-hero">
+      <h1 class="page-hero-title">Your <em>Progress</em></h1>
+      <p class="page-hero-sub">Track your learning journey</p>
+    </div>
+
+    <!-- Streak block -->
+    <div class="streak-block anim-fadeup" style="animation-delay:0ms">
+      <div class="streak-fire">🔥</div>
+      <div>
+        <div class="streak-val" id="streakVal">0</div>
+        <div class="streak-label" id="streakLabel">day streak</div>
+      </div>
+      <div style="flex:1;text-align:right;">
+        <div style="font-size:12px;color:var(--tx-3);margin-bottom:4px;">LAST ACTIVE</div>
+        <div style="font-size:14px;font-weight:600;" id="lastDate">Never</div>
+      </div>
+    </div>
+
+    <!-- Level card -->
+    <div class="level-card anim-fadeup" style="animation-delay:60ms">
+      <div class="level-emoji" id="levelEmoji">🌱</div>
+      <div class="level-name"  id="levelName">Beginner</div>
+      <div class="level-num"   id="levelNum">Level 1</div>
+
+      <div class="level-xp-row">
+        <span id="xpCurrent">0 XP</span>
+        <span id="xpNext">Next: 100 XP</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="xpBar" style="width:0%"></div>
+      </div>
+      <div style="margin-top:10px;font-size:13px;color:var(--tx-3);">
+        <span id="xpToGo"></span>
+      </div>
+    </div>
+
+    <!-- Overall progress -->
+    <div class="progress-section anim-fadeup" style="animation-delay:100ms">
+      <div class="ps-header">
+        <div class="ps-title">📚 Overall Progress</div>
+        <div class="ps-pct" id="overallPct">0%</div>
+      </div>
+      <div style="margin-bottom:6px;">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--tx-3);margin-bottom:6px;">
+          <span id="learnedOf">0 learned</span>
+          <span id="learnedTotal">of 198</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="overallBar" style="width:0%"></div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--tx-3);margin-top:10px;" id="reviewStat"></div>
+    </div>
+
+    <!-- Breakdown by type -->
+    <div style="margin-bottom:14px;">
+      <div style="font-size:13px;font-weight:700;color:var(--tx-2);margin-bottom:12px;letter-spacing:0.06em;text-transform:uppercase;">By Type</div>
+      <div class="type-breakdown" id="typeBreakdown"></div>
+    </div>
+
+    <!-- Reset -->
+    <div style="text-align:center; padding: 8px 0 48px;">
+      <button class="btn btn-ghost" onclick="resetProgress()">🗑️ Reset All Progress</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ─── INIT ─── */
+let state = getState();
+renderNav();
+renderProgress();
+
+/* ─── RENDER PROGRESS ─── */
+function renderProgress() {
+  const learned  = state.learned.size;
+  const total    = DATA.length;
+  const pct      = total ? Math.round((learned / total) * 100) : 0;
+  const xp       = state.xp;
+  const level    = getLevel(xp);
+  const nextLev  = getNextLevel(xp);
+  const xpPct    = xpProgressPct(xp);
+
+  // Streak
+  document.getElementById('streakVal').textContent   = state.streak;
+  document.getElementById('streakLabel').textContent = state.streak === 1 ? 'day streak' : 'day streak';
+  document.getElementById('lastDate').textContent    = state.lastDate || 'Never';
+
+  // Level
+  document.getElementById('levelEmoji').textContent = level.emoji;
+  document.getElementById('levelName').textContent  = level.label;
+  document.getElementById('levelNum').textContent   = 'Level ' + level.level;
+  document.getElementById('xpCurrent').textContent  = xp + ' XP';
+  document.getElementById('xpNext').textContent     = nextLev ? 'Next: ' + nextLev.minXP + ' XP' : 'MAX LEVEL';
+  document.getElementById('xpBar').style.width      = xpPct + '%';
+  document.getElementById('xpToGo').textContent     = nextLev
+    ? (nextLev.minXP - xp) + ' XP to Level ' + nextLev.level
+    : '🌟 Maximum level reached!';
+
+  // Overall
+  document.getElementById('overallPct').textContent    = pct + '%';
+  document.getElementById('overallBar').style.width    = pct + '%';
+  document.getElementById('learnedOf').textContent     = learned + ' learned';
+  document.getElementById('learnedTotal').textContent  = 'of ' + total;
+  document.getElementById('reviewStat').textContent    = state.difficult.size
+    ? `${state.difficult.size} expression${state.difficult.size > 1 ? 's' : ''} in your review list`
+    : 'No expressions in review list — great work!';
+
+  // Type breakdown
+  const types = [
+    { type: 'idiom',       label: 'Idioms',       color: 'var(--c-idiom)' },
+    { type: 'proverb',     label: 'Proverbs',     color: 'var(--c-proverb)' },
+    { type: 'slang',       label: 'Slang',        color: 'var(--c-slang)' },
+    { type: 'phrasal verb',label: 'Phrasal Verbs',color: 'var(--c-phrasal)' },
+  ];
+  document.getElementById('typeBreakdown').innerHTML = types.map(t => {
+    const tAll   = DATA.filter(d => d.type === t.type);
+    const tLearned = tAll.filter(d => state.learned.has(d.n)).length;
+    const tPct   = tAll.length ? Math.round((tLearned / tAll.length) * 100) : 0;
+    return `
+    <div class="tb-item anim-fadeup">
+      <div class="tb-label" style="color:${t.color}">${t.label}</div>
+      <div class="tb-count" style="color:${t.color}">${tLearned}<span style="font-size:14px;color:var(--tx-3);font-family:var(--font-body);font-weight:400;"> / ${tAll.length}</span></div>
+      <div style="margin-top:8px;">
+        <div class="progress-track" style="height:4px;">
+          <div class="progress-fill" style="width:${tPct}%;background:${t.color};"></div>
+        </div>
+      </div>
+      <div class="tb-sub">${tPct}% complete</div>
+    </div>`;
+  }).join('');
+}
+
+/* ─── RENDER NAV ─── */
+function renderNav() {
+  document.getElementById('navStreak').textContent = '🔥 ' + state.streak;
+  document.getElementById('navXP').textContent     = '⭐ ' + state.xp + ' XP';
+}
+
+/* ─── RESET ─── */
+function resetProgress() {
+  if (!confirm('This will erase all your XP, streak, learned and review data. Are you sure?')) return;
+  state.learned.clear();
+  state.difficult.clear();
+  state.xp      = 0;
+  state.streak  = 0;
+  state.lastDate = '';
+  saveState(state);
+  renderNav();
+  renderProgress();
+  showToast('Progress reset');
+}
+
+/* ─── TOAST ─── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>

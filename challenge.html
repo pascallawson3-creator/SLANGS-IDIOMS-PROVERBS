@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdiomVault — Brain Challenge</title>
+<link rel="stylesheet" href="style.css">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   CHALLENGE MODE — Extra styles layered on top of style.css
+═══════════════════════════════════════════════════════════════ */
+
+/* ── START SCREEN ─────────────────────────────────────────── */
+.ch-start {
+  text-align: center;
+  padding: 40px 0 60px;
+}
+.ch-start-icon {
+  font-size: 80px;
+  margin-bottom: 20px;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+.ch-start-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 7vw, 54px);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 12px;
+}
+.ch-start-title em { color: var(--accent); }
+.ch-start-sub {
+  font-size: 15px;
+  color: var(--tx-2);
+  margin-bottom: 36px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Scores strip on start screen */
+.ch-scores {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+.ch-score-pill {
+  background: var(--bg-card);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-lg);
+  padding: 14px 24px;
+  text-align: center;
+}
+.ch-score-pill-val {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.ch-score-pill-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tx-3);
+  margin-top: 4px;
+}
+
+/* Mode pills on start screen */
+.ch-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 30px;
+  text-align: left;
+}
+.ch-mode-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-lg);
+  padding: 16px 18px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.ch-mode-icon { font-size: 22px; flex-shrink: 0; }
+.ch-mode-name { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.ch-mode-desc { font-size: 11px; color: var(--tx-3); line-height: 1.5; }
+
+/* ── CHALLENGE HEADER (during session) ────────────────────── */
+.ch-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-lg);
+}
+.ch-hdr-stat { text-align: center; }
+.ch-hdr-stat-val {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.ch-hdr-stat-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tx-3);
+  margin-top: 3px;
+}
+.ch-hdr-center { text-align: center; }
+.ch-q-counter {
+  font-size: 12px;
+  color: var(--tx-2);
+  font-weight: 600;
+}
+.ch-timer {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--tx);
+  transition: color 0.3s;
+}
+.ch-timer.urgent { color: var(--wrong); animation: timerPulse 0.5s ease infinite alternate; }
+@keyframes timerPulse { from { opacity: 1; } to { opacity: 0.5; } }
+
+/* ── QUESTION TYPE BADGE ──────────────────────────────────── */
+.ch-q-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border-md);
+  color: var(--tx-3);
+  margin-bottom: 14px;
+}
+
+/* ── QUESTION CARD ────────────────────────────────────────── */
+.ch-question-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+  margin-bottom: 18px;
+  transition: border-color 0.2s;
+}
+.ch-q-bar { height: 4px; }
+.ch-q-inner { padding: 28px 30px; }
+.ch-q-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tx-3);
+  margin-bottom: 12px;
+}
+.ch-q-text {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 4.5vw, 34px);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.25;
+  color: var(--tx);
+  letter-spacing: -0.01em;
+}
+.ch-q-text .blank {
+  display: inline-block;
+  border-bottom: 3px solid var(--accent);
+  min-width: 120px;
+  text-align: center;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  font-style: normal;
+  font-size: 0.8em;
+  vertical-align: middle;
+  padding: 0 8px;
+}
+
+/* Context situation box */
+.ch-situation {
+  background: var(--bg-card-2);
+  border-left: 3px solid var(--warn);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  padding: 14px 18px;
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--tx);
+  line-height: 1.6;
+  font-style: italic;
+}
+.ch-situation::before {
+  content: '📍 Situation: ';
+  font-style: normal;
+  font-weight: 700;
+  color: var(--warn);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── OPTIONS GRID ─────────────────────────────────────────── */
+.ch-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.ch-opt {
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-md);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  font-size: clamp(12px, 2.5vw, 14px);
+  line-height: 1.45;
+  color: var(--tx);
+  font-weight: 500;
+  text-align: left;
+  transition: all 0.15s var(--ease);
+  cursor: pointer;
+  font-family: var(--font-body);
+  position: relative;
+  overflow: hidden;
+}
+.ch-opt::before {
+  content: attr(data-letter);
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--tx-3);
+  transition: color 0.15s;
+}
+.ch-opt:hover:not(:disabled) {
+  border-color: var(--accent);
+  background: var(--accent-glow);
+  color: var(--tx);
+}
+.ch-opt:hover:not(:disabled)::before { color: var(--accent); }
+.ch-opt.correct {
+  border-color: var(--correct) !important;
+  background: var(--correct-dim) !important;
+  color: var(--correct) !important;
+}
+.ch-opt.correct::before { color: var(--correct); }
+.ch-opt.wrong {
+  border-color: var(--wrong) !important;
+  background: var(--wrong-dim) !important;
+  color: var(--wrong) !important;
+}
+.ch-opt.wrong::before { color: var(--wrong); }
+.ch-opt:disabled { cursor: default; }
+
+/* ── FEEDBACK PANEL ───────────────────────────────────────── */
+.ch-feedback {
+  background: var(--bg-card-2);
+  border-radius: var(--r-lg);
+  padding: 18px 22px;
+  margin-bottom: 16px;
+  display: none;
+  animation: fadeUp 0.25s var(--ease);
+}
+.ch-feedback.show { display: block; }
+.ch-fb-result { font-size: 20px; font-weight: 800; margin-bottom: 6px; }
+.ch-fb-result.ok  { color: var(--correct); }
+.ch-fb-result.bad { color: var(--wrong); }
+.ch-fb-answer { font-size: 14px; color: var(--tx-2); line-height: 1.55; }
+.ch-fb-answer strong { color: var(--tx); }
+
+/* Streak badge that appears inline */
+.streak-burst {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(240,100,40,0.2);
+  border: 1px solid rgba(240,100,40,0.4);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #f06428;
+  margin-left: 10px;
+}
+
+/* ── SPEED ROUND OVERLAY ──────────────────────────────────── */
+.speed-banner {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: linear-gradient(135deg, rgba(240,168,64,0.18), rgba(240,100,40,0.12));
+  border: 1px solid rgba(240,168,64,0.35);
+  border-radius: var(--r-lg);
+  padding: 16px 22px;
+  margin-bottom: 16px;
+  animation: fadeUp 0.3s var(--ease);
+}
+.speed-banner.active { display: flex; }
+.speed-banner-icon { font-size: 28px; }
+.speed-banner-text { font-weight: 700; font-size: 15px; color: var(--warn); }
+.speed-countdown {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--warn);
+  min-width: 48px;
+  text-align: center;
+  line-height: 1;
+}
+.speed-countdown.low { color: var(--wrong); animation: timerPulse 0.4s ease infinite alternate; }
+
+/* ── ROUND INTRO OVERLAY ──────────────────────────────────── */
+.ch-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: rgba(10,10,10,0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 14px;
+  animation: fadeIn 0.25s ease;
+  display: none;
+}
+.ch-intro.show { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.ch-intro-icon { font-size: 72px; animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1); }
+.ch-intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 7vw, 52px);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--warn);
+  letter-spacing: -0.02em;
+}
+.ch-intro-sub { font-size: 15px; color: var(--tx-2); }
+.ch-intro-countdown {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 700;
+  color: var(--accent);
+  animation: countScale 1s ease-in-out infinite;
+}
+@keyframes countScale {
+  0%  { transform: scale(1.2); opacity: 0; }
+  30% { transform: scale(1);   opacity: 1; }
+  80% { transform: scale(1);   opacity: 1; }
+  100%{ transform: scale(0.8); opacity: 0; }
+}
+
+/* ── END SCREEN ───────────────────────────────────────────── */
+.ch-end {
+  text-align: center;
+  padding: 48px 20px 60px;
+  display: none;
+}
+.ch-end.show { display: block; }
+.ch-end-emoji { font-size: 80px; margin-bottom: 16px; animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1); }
+.ch-end-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 7vw, 52px);
+  font-weight: 700;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+.ch-end-subtitle { font-size: 16px; color: var(--tx-2); margin-bottom: 32px; }
+.ch-end-grid {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  margin-bottom: 32px;
+}
+.ch-end-stat {
+  background: var(--bg-card);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-lg);
+  padding: 16px 12px;
+}
+.ch-end-stat-val {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+}
+.ch-end-stat-lbl {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tx-3);
+  margin-top: 4px;
+}
+.ch-end-best {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(168,240,64,0.1);
+  border: 1px solid rgba(168,240,64,0.25);
+  border-radius: var(--r-md);
+  padding: 10px 20px;
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 28px;
+}
+.ch-end-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 340px;
+  margin: 0 auto;
+}
+
+/* Score bar colours for final results */
+.ch-result-bar {
+  height: 8px;
+  background: var(--border-md);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+.ch-result-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ── NEXT BTN ─────────────────────────────────────────────── */
+#nextBtn {
+  display: none;
+  margin-bottom: 32px;
+}
+
+/* ── QUESTION AREA WRAPPER ────────────────────────────────── */
+#challengeArea { display: none; }
+
+/* ── MOBILE ────────────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .ch-options { grid-template-columns: 1fr; }
+  .ch-modes { grid-template-columns: 1fr; }
+  .ch-end-grid { grid-template-columns: repeat(3,1fr); gap: 6px; }
+  .ch-end-stat-val { font-size: 22px; }
+  .ch-header { padding: 12px 14px; }
+  .ch-q-inner { padding: 20px; }
+  .speed-banner { flex-wrap: wrap; gap: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAVIGATION ═══ -->
+<nav class="nav">
+  <div class="nav-logo">IdiomVault <span>by BODY</span></div>
+  <div class="nav-links">
+    <a href="index.html"    class="nav-link"><span class="nl-icon">🃏</span><span class="nl-text">Cards</span></a>
+    <a href="quiz.html"     class="nav-link"><span class="nl-icon">⚡</span><span class="nl-text">Quiz</span></a>
+    <a href="review.html"   class="nav-link"><span class="nl-icon">🔁</span><span class="nl-text">Review</span></a>
+    <a href="progress.html" class="nav-link"><span class="nl-icon">📊</span><span class="nl-text">Progress</span></a>
+    <a href="challenge.html" class="nav-link active"><span class="nl-icon">🧠</span><span class="nl-text">Challenge</span></a>
+  </div>
+  <div class="nav-xp">
+    <div class="streak-pill" id="navStreak">🔥 0</div>
+    <div class="xp-pill" id="navXP">⭐ 0 XP</div>
+  </div>
+</nav>
+
+<!-- ═══ XP POP ═══ -->
+<div class="xp-pop" id="xpPop">+10 XP</div>
+
+<!-- ═══ TOAST ═══ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══ SPEED ROUND INTRO OVERLAY ═══ -->
+<div class="ch-intro" id="speedIntro">
+  <div class="ch-intro-icon">⚡</div>
+  <div class="ch-intro-title">Speed Round!</div>
+  <div class="ch-intro-sub">30 seconds — answer as fast as you can</div>
+  <div class="ch-intro-countdown" id="introCountdown">3</div>
+</div>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+  <div class="container">
+
+    <!-- ── START SCREEN ── -->
+    <div id="startScreen">
+      <div class="ch-start">
+        <div class="ch-start-icon">🧠</div>
+        <h1 class="ch-start-title">Brain <em>Challenge</em></h1>
+        <p class="ch-start-sub">15 questions. 5 challenge types. Can you master them all?</p>
+
+        <!-- Personal bests -->
+        <div class="ch-scores">
+          <div class="ch-score-pill">
+            <div class="ch-score-pill-val" id="startBest">—</div>
+            <div class="ch-score-pill-lbl">Best Score</div>
+          </div>
+          <div class="ch-score-pill">
+            <div class="ch-score-pill-val" id="startLast">—</div>
+            <div class="ch-score-pill-lbl">Last Score</div>
+          </div>
+          <div class="ch-score-pill">
+            <div class="ch-score-pill-val" id="startPlayed">0</div>
+            <div class="ch-score-pill-lbl">Sessions</div>
+          </div>
+        </div>
+
+        <!-- What's inside -->
+        <div class="ch-modes">
+          <div class="ch-mode-card">
+            <div class="ch-mode-icon">💬</div>
+            <div>
+              <div class="ch-mode-name">Expression → Meaning</div>
+              <div class="ch-mode-desc">Pick the correct definition</div>
+            </div>
+          </div>
+          <div class="ch-mode-card">
+            <div class="ch-mode-icon">🔍</div>
+            <div>
+              <div class="ch-mode-name">Meaning → Expression</div>
+              <div class="ch-mode-desc">Identify the right phrase</div>
+            </div>
+          </div>
+          <div class="ch-mode-card">
+            <div class="ch-mode-icon">🔥</div>
+            <div>
+              <div class="ch-mode-name">Fill in the Blank</div>
+              <div class="ch-mode-desc">Complete the sentence</div>
+            </div>
+          </div>
+          <div class="ch-mode-card">
+            <div class="ch-mode-icon">🌍</div>
+            <div>
+              <div class="ch-mode-name">Context Challenge</div>
+              <div class="ch-mode-desc">Pick the best phrase for the situation</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;max-width:340px;margin:0 auto;">
+          <button class="btn btn-primary btn-full btn-lg" onclick="startChallenge()">
+            🧠 Start Challenge
+          </button>
+          <a href="index.html" class="btn btn-ghost btn-full">← Back to Cards</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── CHALLENGE SESSION ── -->
+    <div id="challengeArea">
+
+      <!-- Page hero (compact) -->
+      <div class="page-hero" style="padding:28px 0 20px;">
+        <h1 class="page-hero-title"><em>Brain</em> Challenge</h1>
+      </div>
+
+      <!-- Stats header -->
+      <div class="ch-header">
+        <div class="ch-hdr-stat" style="text-align:left;">
+          <div class="ch-hdr-stat-val" id="hdrScore">0</div>
+          <div class="ch-hdr-stat-lbl">Score</div>
+        </div>
+        <div class="ch-hdr-center">
+          <div class="ch-q-counter" id="hdrQ">Question 1 / 15</div>
+          <div class="ch-timer" id="hdrTimer">0:00</div>
+        </div>
+        <div class="ch-hdr-stat" style="text-align:right;">
+          <div class="ch-hdr-stat-val" id="hdrStreak" style="color:#f06428;">0 🔥</div>
+          <div class="ch-hdr-stat-lbl">Streak</div>
+        </div>
+      </div>
+
+      <!-- Progress bar -->
+      <div class="progress-track" style="margin-bottom:20px;">
+        <div class="progress-fill" id="challengeProgressFill" style="width:6.67%"></div>
+      </div>
+
+      <!-- Speed Round Banner -->
+      <div class="speed-banner" id="speedBanner">
+        <div class="speed-banner-icon">⚡</div>
+        <div class="speed-banner-text">SPEED ROUND</div>
+        <div class="speed-countdown" id="speedCountdown">30</div>
+      </div>
+
+      <!-- Question type badge -->
+      <div style="margin-bottom:4px;">
+        <span class="ch-q-type" id="qTypeBadge">💬 Expression → Meaning</span>
+      </div>
+
+      <!-- Question card -->
+      <div class="ch-question-card anim-popin" id="questionCard">
+        <div class="ch-q-bar" id="qBar"></div>
+        <div class="ch-q-inner">
+          <div class="ch-q-label" id="qLabel">WHAT DOES THIS MEAN?</div>
+          <div class="ch-q-text" id="qText">Loading…</div>
+          <!-- Context situation (only for context type) -->
+          <div class="ch-situation" id="qSituation" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Options -->
+      <div class="ch-options" id="chOptions"></div>
+
+      <!-- Feedback -->
+      <div class="ch-feedback" id="chFeedback">
+        <div class="ch-fb-result" id="fbResult"></div>
+        <div class="ch-fb-answer" id="fbAnswer"></div>
+      </div>
+
+      <!-- Next button -->
+      <button class="btn btn-primary btn-full btn-lg" id="nextBtn" onclick="nextQuestion()">
+        Next →
+      </button>
+
+    </div>
+
+    <!-- ── END SCREEN ── -->
+    <div class="ch-end" id="endScreen">
+      <div class="ch-end-emoji" id="endEmoji">🎉</div>
+      <h2 class="ch-end-title" id="endTitle">Outstanding!</h2>
+      <p class="ch-end-subtitle" id="endSubtitle">You answered 15 questions</p>
+
+      <div class="ch-end-grid">
+        <div class="ch-end-stat">
+          <div class="ch-end-stat-val" id="endScore">0</div>
+          <div class="ch-end-stat-lbl">Score</div>
+        </div>
+        <div class="ch-end-stat">
+          <div class="ch-end-stat-val" id="endAccuracy">0%</div>
+          <div class="ch-end-stat-lbl">Accuracy</div>
+        </div>
+        <div class="ch-end-stat">
+          <div class="ch-end-stat-val" id="endTime">0:00</div>
+          <div class="ch-end-stat-lbl">Time</div>
+        </div>
+      </div>
+
+      <!-- Accuracy bar -->
+      <div class="ch-result-bar">
+        <div class="ch-result-fill" id="endAccBar" style="width:0%;background:linear-gradient(90deg,#60e030,var(--accent));"></div>
+      </div>
+
+      <div class="ch-end-best" id="endBestBadge" style="display:none;">
+        🏆 New Best Score!
+      </div>
+
+      <div class="ch-end-btns">
+        <button class="btn btn-primary btn-full btn-lg" onclick="startChallenge()">🔄 Play Again</button>
+        <a href="progress.html" class="btn btn-ghost btn-full btn-lg">📊 View Progress</a>
+        <a href="index.html" class="btn btn-ghost btn-full">← Back to Cards</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════
+   CHALLENGE MODE — Brain Challenge Engine
+   IdiomVault by BODY
+════════════════════════════════════════════════════════════ */
+
+/* ── CONFIG ──────────────────────────────────────────────── */
+const TOTAL_Q        = 15;
+const OPTS_COUNT     = 4;
+const SPEED_DURATION = 30;    // seconds for speed round
+const AUTO_ADVANCE   = 1300;  // ms before auto-advancing after answer
+const SPEED_AUTO_ADV = 600;   // ms auto-advance during speed round
+
+/* Speed round positions (1-indexed question numbers that trigger speed round).
+   We pick 1-2 positions randomly. Keep them away from q1 and last q. */
+const SPEED_TRIGGERS = [5, 6, 9, 10, 11]; // pool to pick from
+
+/* ── QUESTION TYPE LABELS ────────────────────────────────── */
+const Q_TYPES = ['expr-meaning', 'meaning-expr', 'fill-blank', 'context'];
+const Q_TYPE_LABELS = {
+  'expr-meaning': '💬 Expression → Meaning',
+  'meaning-expr': '🔍 Meaning → Expression',
+  'fill-blank':   '🔥 Fill in the Blank',
+  'context':      '🌍 Context Challenge',
+};
+const Q_TYPE_LABELS_DISPLAY = {
+  'expr-meaning': 'WHAT DOES THIS MEAN?',
+  'meaning-expr': 'WHICH EXPRESSION FITS THIS MEANING?',
+  'fill-blank':   'COMPLETE THE SENTENCE',
+  'context':      'WHICH EXPRESSION FITS THIS SITUATION?',
+};
+
+/* ── STATE ───────────────────────────────────────────────── */
+let appState;
+let questions       = [];
+let qIdx            = 0;
+let answered        = false;
+let sessionScore    = 0;
+let sessionCorrect  = 0;
+let sessionStreak   = 0;
+let xpEarned        = 0;
+let sessionStart    = 0;     // Date.now()
+let sessionTimer    = null;  // interval for header clock
+let speedActive     = false;
+let speedTimer      = null;
+let speedSecondsLeft= 0;
+let speedTriggers   = [];    // question indices that trigger speed round
+let isSpeedQ        = false; // is current question inside speed round?
+
+/* ── STORAGE KEYS ────────────────────────────────────────── */
+const CH_KEYS = {
+  best:    'ch_best',
+  last:    'ch_last',
+  played:  'ch_played',
+};
+
+/* ── INIT ─────────────────────────────────────────────────── */
+(function init() {
+  appState = getState();
+  appState = updateStreak(appState);
+  saveState(appState);
+  renderNav();
+  renderStartScreen();
+  document.getElementById('startScreen').style.display = 'block';
+  document.getElementById('challengeArea').style.display = 'none';
+  document.getElementById('endScreen').classList.remove('show');
+})();
+
+/* ── RENDER START SCREEN ─────────────────────────────────── */
+function renderStartScreen() {
+  const best   = localStorage.getItem(CH_KEYS.best);
+  const last   = localStorage.getItem(CH_KEYS.last);
+  const played = parseInt(localStorage.getItem(CH_KEYS.played) || '0', 10);
+  document.getElementById('startBest').textContent   = best   ? best   : '—';
+  document.getElementById('startLast').textContent   = last   ? last   : '—';
+  document.getElementById('startPlayed').textContent = played;
+}
+
+/* ── BUILD QUESTION SET ──────────────────────────────────── */
+function buildQuestions() {
+  // Shuffle data, pick TOTAL_Q unique entries
+  const pool = shuffle(DATA).slice(0, TOTAL_Q);
+
+  // Assign question types — ensure good distribution
+  // Minimum: 2 of each of the 4 types, then fill randomly
+  const typePool = [];
+  Q_TYPES.forEach(t => typePool.push(t, t)); // 2 each = 8
+  while (typePool.length < TOTAL_Q) typePool.push(Q_TYPES[Math.floor(Math.random() * Q_TYPES.length)]);
+  const shuffledTypes = shuffle(typePool).slice(0, TOTAL_Q);
+
+  return pool.map((entry, i) => ({
+    entry,
+    qtype: shuffledTypes[i],
+    idx:   i,
+  }));
+}
+
+/* ── DECIDE SPEED ROUND TRIGGERS ─────────────────────────── */
+function buildSpeedTriggers() {
+  // Pick 1 or 2 question indices (0-based) from middle of session
+  const eligible = [4, 5, 6, 8, 9, 10]; // avoid first 4 and last 3
+  const count    = Math.random() < 0.4 ? 2 : 1; // 40% chance of 2 speed rounds
+  const chosen   = shuffle(eligible).slice(0, count);
+  return chosen;
+}
+
+/* ── START CHALLENGE ─────────────────────────────────────── */
+function startChallenge() {
+  // Reset session
+  questions      = buildQuestions();
+  speedTriggers  = buildSpeedTriggers();
+  qIdx           = 0;
+  answered       = false;
+  sessionScore   = 0;
+  sessionCorrect = 0;
+  sessionStreak  = 0;
+  xpEarned       = 0;
+  sessionStart   = Date.now();
+  speedActive    = false;
+  isSpeedQ       = false;
+  clearInterval(speedTimer);
+  clearInterval(sessionTimer);
+
+  // Show challenge area
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('challengeArea').style.display = 'block';
+  document.getElementById('endScreen').classList.remove('show');
+  document.getElementById('speedBanner').classList.remove('active');
+
+  // Start session clock
+  sessionTimer = setInterval(tickTimer, 1000);
+
+  renderQuestion();
+}
+
+/* ── SESSION CLOCK ───────────────────────────────────────── */
+function tickTimer() {
+  const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+  document.getElementById('hdrTimer').textContent = formatTime(elapsed);
+}
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m + ':' + String(sec).padStart(2, '0');
+}
+
+/* ── RENDER QUESTION ─────────────────────────────────────── */
+function renderQuestion() {
+  answered = false;
+  document.getElementById('chFeedback').classList.remove('show');
+  document.getElementById('nextBtn').style.display = 'none';
+
+  // Check if this q starts a speed round
+  if (speedTriggers.includes(qIdx) && !speedActive) {
+    triggerSpeedRound();
+    return; // triggerSpeedRound calls back renderQuestion after countdown
+  }
+
+  const { entry, qtype } = questions[qIdx];
+  const col = typeColor(entry.type);
+
+  // Update header
+  document.getElementById('hdrQ').textContent = `Question ${qIdx + 1} / ${TOTAL_Q}`;
+  document.getElementById('hdrScore').textContent = sessionScore;
+  document.getElementById('hdrStreak').textContent = sessionStreak + ' 🔥';
+
+  // Progress fill
+  document.getElementById('challengeProgressFill').style.width =
+    Math.round(((qIdx + 1) / TOTAL_Q) * 100) + '%';
+
+  // Type badge
+  document.getElementById('qTypeBadge').textContent = Q_TYPE_LABELS[qtype] || qtype;
+
+  // Question card bar colour
+  document.getElementById('qBar').style.background = col;
+
+  // Build question content
+  buildQuestionContent(entry, qtype, col);
+
+  // Animate card in
+  const card = document.getElementById('questionCard');
+  card.classList.remove('anim-popin');
+  void card.offsetWidth;
+  card.classList.add('anim-popin');
+}
+
+/* ── BUILD QUESTION CONTENT ──────────────────────────────── */
+function buildQuestionContent(entry, qtype, col) {
+  const qLabel    = document.getElementById('qLabel');
+  const qText     = document.getElementById('qText');
+  const qSituation= document.getElementById('qSituation');
+  const chOptions = document.getElementById('chOptions');
+
+  qLabel.textContent = Q_TYPE_LABELS_DISPLAY[qtype] || 'CHOOSE THE CORRECT ANSWER';
+  qSituation.style.display = 'none';
+
+  let promptText  = '';
+  let opts        = [];
+  let correctN    = entry.n;
+
+  if (qtype === 'expr-meaning') {
+    // Show expression, pick meaning
+    promptText = '"' + entry.expr + '"';
+    opts = buildMeaningOptions(entry);
+
+  } else if (qtype === 'meaning-expr') {
+    // Show meaning, pick expression
+    promptText = entry.meaning;
+    opts = buildExpressionOptions(entry);
+
+  } else if (qtype === 'fill-blank') {
+    // Replace the expression in the example sentence with a blank
+    const blankHtml = buildFillBlank(entry);
+    qText.innerHTML = blankHtml;
+    opts = buildExpressionOptions(entry);
+    renderOptions(opts, entry, qtype);
+    return; // already rendered
+
+  } else if (qtype === 'context') {
+    // Show a short situation, pick expression
+    qText.textContent = 'Which expression best fits?';
+    qSituation.style.display = 'block';
+    qSituation.textContent   = buildSituation(entry);
+    opts = buildExpressionOptions(entry);
+    renderOptions(opts, entry, qtype);
+    return;
+  }
+
+  qText.textContent = promptText;
+  renderOptions(opts, entry, qtype);
+}
+
+/* Build blank sentence HTML */
+function buildFillBlank(entry) {
+  const expr = entry.expr;
+  const ex   = entry.example;
+  // Try to find the expression (case-insensitive) in the example
+  const reg  = new RegExp(escapeRegex(expr), 'i');
+  if (reg.test(ex)) {
+    const replaced = ex.replace(reg, `<span class="blank">______</span>`);
+    return replaced;
+  }
+  // Fallback: show generic sentence with blank
+  return `He finally decided to <span class="blank">______</span> and move on.`;
+}
+
+/* Build a context situation from the entry */
+function buildSituation(entry) {
+  // Use the example, but hide the expression itself
+  const expr = entry.expr;
+  const ex   = entry.example;
+  const reg  = new RegExp(escapeRegex(expr), 'i');
+  if (reg.test(ex)) {
+    // Show a paraphrased scenario using the example minus the expression
+    // Strip the idiom from the example to give a 'situation'
+    const stripped = ex.replace(reg, '…').trim();
+    return stripped;
+  }
+  return ex; // fallback
+}
+
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/* ── BUILD OPTIONS ───────────────────────────────────────── */
+function buildMeaningOptions(correct) {
+  // 3 distractor meanings from different entries
+  const distractors = shuffle(DATA.filter(d => d.n !== correct.n)).slice(0, OPTS_COUNT - 1);
+  const all = shuffle([
+    { n: correct.n, text: correct.meaning, isCorrect: true },
+    ...distractors.map(d => ({ n: d.n, text: d.meaning, isCorrect: false })),
+  ]);
+  return all;
+}
+
+function buildExpressionOptions(correct) {
+  // 3 distractor expressions
+  const distractors = shuffle(DATA.filter(d => d.n !== correct.n && d.type === correct.type))
+    .slice(0, OPTS_COUNT - 1);
+  // Fallback if not enough same-type
+  const extra = shuffle(DATA.filter(d => d.n !== correct.n))
+    .filter(d => !distractors.find(x => x.n === d.n));
+  while (distractors.length < OPTS_COUNT - 1) distractors.push(extra.shift());
+
+  const all = shuffle([
+    { n: correct.n, text: correct.expr, isCorrect: true },
+    ...distractors.slice(0, OPTS_COUNT - 1).map(d => ({ n: d.n, text: d.expr, isCorrect: false })),
+  ]);
+  return all;
+}
+
+/* ── RENDER OPTIONS ──────────────────────────────────────── */
+const LETTERS = ['A', 'B', 'C', 'D'];
+function renderOptions(opts, entry, qtype) {
+  const container = document.getElementById('chOptions');
+  container.innerHTML = '';
+  opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'ch-opt';
+    btn.setAttribute('data-letter', LETTERS[i]);
+    btn.textContent = opt.text;
+    btn.addEventListener('click', () => handleAnswer(opt.isCorrect, btn, entry, opts));
+    container.appendChild(btn);
+  });
+}
+
+/* ── HANDLE ANSWER ───────────────────────────────────────── */
+function handleAnswer(isCorrect, clickedBtn, entry, opts) {
+  if (answered) return;
+  answered = true;
+
+  // Disable all buttons + highlight correct
+  document.querySelectorAll('.ch-opt').forEach(btn => {
+    btn.disabled = true;
+  });
+  // Highlight correct answer
+  const allBtns = document.querySelectorAll('.ch-opt');
+  allBtns.forEach((btn, i) => {
+    if (opts[i] && opts[i].isCorrect) btn.classList.add('correct');
+  });
+  if (!isCorrect) clickedBtn.classList.add('wrong');
+
+  const fb  = document.getElementById('chFeedback');
+  const res = document.getElementById('fbResult');
+  const ans = document.getElementById('fbAnswer');
+  fb.classList.add('show');
+
+  if (isCorrect) {
+    sessionCorrect++;
+    sessionStreak++;
+    let xpGain = 10;
+    // Bonus XP every 3 in a row
+    if (sessionStreak % 3 === 0 && sessionStreak > 0) {
+      xpGain += 5;
+      showXpPop('+15 XP 🔥');
+    } else {
+      showXpPop('+10 XP');
+    }
+    sessionScore  += xpGain;
+    xpEarned      += xpGain;
+    appState.xp   += xpGain;
+
+    res.className = 'ch-fb-result ok';
+    res.innerHTML = '✓ Correct!' + (sessionStreak >= 3 ? `<span class="streak-burst">🔥 ${sessionStreak} streak</span>` : '');
+    ans.innerHTML = `<strong>"${entry.expr}"</strong> — ${entry.meaning}`;
+
+    appState.learned.add(entry.n);
+    appState.difficult.delete(entry.n);
+
+  } else {
+    sessionStreak = 0;
+    res.className = 'ch-fb-result bad';
+    res.textContent = '✗ Not quite…';
+    ans.innerHTML = `Correct: <strong>"${entry.expr}"</strong> — ${entry.meaning}`;
+
+    appState.difficult.add(entry.n);
+  }
+
+  saveState(appState);
+  renderNav();
+  document.getElementById('hdrScore').textContent = sessionScore;
+  document.getElementById('hdrStreak').textContent = sessionStreak + ' 🔥';
+
+  // Auto advance
+  const delay = speedActive ? SPEED_AUTO_ADV : AUTO_ADVANCE;
+  const nextBtn = document.getElementById('nextBtn');
+  nextBtn.style.display = 'flex';
+  setTimeout(() => {
+    if (answered) nextQuestion(); // only if user hasn't clicked manually
+  }, delay);
+}
+
+/* ── NEXT QUESTION ───────────────────────────────────────── */
+function nextQuestion() {
+  qIdx++;
+  if (qIdx >= TOTAL_Q) {
+    endSession();
+    return;
+  }
+  renderQuestion();
+}
+
+/* ── SPEED ROUND ─────────────────────────────────────────── */
+function triggerSpeedRound() {
+  // Show intro overlay with countdown
+  const intro = document.getElementById('speedIntro');
+  intro.classList.add('show');
+  let countdown = 3;
+  document.getElementById('introCountdown').textContent = countdown;
+
+  const countInterval = setInterval(() => {
+    countdown--;
+    if (countdown <= 0) {
+      clearInterval(countInterval);
+      intro.classList.remove('show');
+      startSpeedRound();
+    } else {
+      document.getElementById('introCountdown').textContent = countdown;
+    }
+  }, 1000);
+}
+
+function startSpeedRound() {
+  speedActive     = true;
+  speedSecondsLeft= SPEED_DURATION;
+  document.getElementById('speedBanner').classList.add('active');
+  updateSpeedCountdown();
+
+  speedTimer = setInterval(() => {
+    speedSecondsLeft--;
+    updateSpeedCountdown();
+    if (speedSecondsLeft <= 0) {
+      endSpeedRound();
+    }
+  }, 1000);
+
+  renderQuestion();
+}
+
+function updateSpeedCountdown() {
+  const el = document.getElementById('speedCountdown');
+  el.textContent = speedSecondsLeft;
+  el.className   = 'speed-countdown' + (speedSecondsLeft <= 10 ? ' low' : '');
+}
+
+function endSpeedRound() {
+  clearInterval(speedTimer);
+  speedActive = false;
+  document.getElementById('speedBanner').classList.remove('active');
+  showToast('⚡ Speed Round Over!');
+  // Continue session if questions remain
+  if (qIdx < TOTAL_Q) {
+    nextQuestion();
+  } else {
+    endSession();
+  }
+}
+
+/* ── END SESSION ─────────────────────────────────────────── */
+function endSession() {
+  clearInterval(sessionTimer);
+  clearInterval(speedTimer);
+  speedActive = false;
+  document.getElementById('speedBanner').classList.remove('active');
+
+  const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+  const accuracy = TOTAL_Q > 0 ? Math.round((sessionCorrect / TOTAL_Q) * 100) : 0;
+
+  // Save scores
+  const prevBest = parseInt(localStorage.getItem(CH_KEYS.best) || '0', 10);
+  const isNewBest = sessionScore > prevBest;
+  localStorage.setItem(CH_KEYS.last, sessionScore);
+  if (isNewBest) localStorage.setItem(CH_KEYS.best, sessionScore);
+  const played = parseInt(localStorage.getItem(CH_KEYS.played) || '0', 10) + 1;
+  localStorage.setItem(CH_KEYS.played, played);
+
+  // Performance tiers
+  let emoji, title, subtitle;
+  if (sessionCorrect >= 13) {
+    emoji = '🏆'; title = 'Excellent Mastery!';
+    subtitle = `${sessionCorrect}/15 correct — you know your idioms!`;
+  } else if (sessionCorrect >= 10) {
+    emoji = '🎉'; title = 'Great Progress!';
+    subtitle = `${sessionCorrect}/15 correct — keep it up!`;
+  } else if (sessionCorrect >= 6) {
+    emoji = '👍'; title = 'Good Job!';
+    subtitle = `${sessionCorrect}/15 correct — practice makes perfect.`;
+  } else {
+    emoji = '💪'; title = 'Keep Practising!';
+    subtitle = `${sessionCorrect}/15 correct — every attempt teaches you more.`;
+  }
+
+  document.getElementById('endEmoji').textContent   = emoji;
+  document.getElementById('endTitle').textContent   = title;
+  document.getElementById('endSubtitle').textContent = subtitle;
+  document.getElementById('endScore').textContent   = sessionScore;
+  document.getElementById('endAccuracy').textContent = accuracy + '%';
+  document.getElementById('endTime').textContent    = formatTime(elapsed);
+
+  // Animate accuracy bar after paint
+  setTimeout(() => {
+    document.getElementById('endAccBar').style.width = accuracy + '%';
+  }, 100);
+
+  // New best badge
+  document.getElementById('endBestBadge').style.display = isNewBest ? 'inline-flex' : 'none';
+
+  // Hide challenge area, show end
+  document.getElementById('challengeArea').style.display = 'none';
+  document.getElementById('endScreen').classList.add('show');
+
+  renderStartScreen(); // update best/last on start screen for next time
+}
+
+/* ── RENDER NAV ──────────────────────────────────────────── */
+function renderNav() {
+  document.getElementById('navStreak').textContent = '🔥 ' + appState.streak;
+  document.getElementById('navXP').textContent     = '⭐ ' + appState.xp + ' XP';
+}
+
+/* ── TOAST ───────────────────────────────────────────────── */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+/* ── XP POP ──────────────────────────────────────────────── */
+function showXpPop(msg) {
+  const el = document.getElementById('xpPop');
+  el.textContent = msg;
+  el.classList.remove('fly');
+  void el.offsetWidth;
+  el.classList.add('fly');
+}
+
+/* ── KEYBOARD ────────────────────────────────────────────── */
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === 'ArrowRight') && answered) {
+    e.preventDefault();
+    nextQuestion();
+  }
+  // A/B/C/D keys to pick options
+  if (!answered) {
+    const map = { 'a': 0, 'b': 1, 'c': 2, 'd': 3 };
+    const idx = map[e.key.toLowerCase()];
+    if (idx !== undefined) {
+      const btns = document.querySelectorAll('.ch-opt');
+      if (btns[idx]) btns[idx].click();
+    }
+  }
+});
+</script>
+</body>
+</html>
