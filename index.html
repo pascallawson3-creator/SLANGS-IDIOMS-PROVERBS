@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IdiomVault — Flashcards</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IdiomVault — Flashcards Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- ═══ NAVIGATION ═══ -->
 <nav class="nav">
   <div class="nav-logo">IdiomVault <span>by BODY</span></div>
   <div class="nav-links">
@@ -19,28 +19,22 @@
     <a href="challenge.html" class="nav-link"><span class="nl-icon">🧠</span><span class="nl-text">Challenge</span></a>
   </div>
   <div class="nav-xp">
-    <div class="streak-pill" id="navStreak">🔥 0</div>
-    <div class="xp-pill" id="navXP">⭐ 0 XP</div>
+    <div class="streak-pill">🔥 <span id="navStreak">0</span></div>
+    <div class="xp-pill">⭐ <span id="navXP">0 XP</span></div>
   </div>
 </nav>
 
-<!-- ═══ XP POP ═══ -->
 <div class="xp-pop" id="xpPop">+10 XP</div>
-
-<!-- ═══ TOAST ═══ -->
 <div class="toast" id="toast"></div>
 
-<!-- ═══ PAGE ═══ -->
 <div class="page">
   <div class="container">
 
-    <!-- Hero -->
     <div class="page-hero">
-      <h1 class="page-hero-title"><em>Flashcard</em> Mode</h1>
-      <p class="page-hero-sub">Tap any card to reveal its meaning</p>
+      <h1 class="page-hero-title"><em>Flashcard</em> Pro</h1>
+      <p class="page-hero-sub">Use <kbd>U</kbd> or <kbd>B</kbd> for Audio | <kbd>Space</kbd> to Flip</p>
     </div>
 
-    <!-- Stats strip -->
     <div class="stat-strip">
       <div class="stat-item">
         <span class="stat-val" id="statTotal">198</span>
@@ -51,255 +45,56 @@
         <span class="stat-lbl">Learned</span>
       </div>
       <div class="stat-item">
-        <span class="stat-val" id="statDifficult">0</span>
-        <span class="stat-lbl">Review</span>
-      </div>
-      <div class="stat-item">
         <span class="stat-val" id="statPct">0%</span>
-        <span class="stat-lbl">Done</span>
+        <span class="stat-lbl">Progress</span>
       </div>
     </div>
 
-    <!-- Type filter tabs -->
-    <div class="filter-tabs" id="filterTabs">
-      <button class="filter-tab on" data-type="All">All</button>
-      <button class="filter-tab" data-type="idiom">Idiom</button>
-      <button class="filter-tab" data-type="proverb">Proverb</button>
-      <button class="filter-tab" data-type="slang">Slang</button>
-      <button class="filter-tab" data-type="phrasal verb">Phrasal Verb</button>
-    </div>
-
-    <!-- Deck progress -->
-    <div class="deck-info">
-      <span id="deckPos">Card 1 of 198</span>
-      <span id="deckPct">0% complete</span>
-    </div>
-    <div class="progress-track" style="margin-bottom: 20px;">
-      <div class="progress-fill" id="deckProgressFill" style="width:0%"></div>
-    </div>
-
-    <!-- Flashcard -->
-    <div class="flashcard-wrap">
-      <div class="flashcard" id="flashcard" onclick="revealCard()">
-        <div class="card-top-bar" id="cardBar"></div>
-        <div class="card-inner">
-          <div class="card-meta-row">
-            <span class="card-num" id="cardNum">#001</span>
-            <span class="type-badge" id="cardType">idiom</span>
-          </div>
-          <div class="card-expr" id="cardExpr">Loading…</div>
-          <div class="card-tap-hint" id="tapHint">
-            <span>👆</span> Tap to reveal meaning
-          </div>
-
-          <!-- Revealed section (hidden until tap) -->
-          <div class="card-revealed" id="cardRevealed">
-            <div class="card-divider">
-              <div class="card-divider-line"></div>
-              <div class="card-divider-dot"></div>
-              <div class="card-divider-line"></div>
+    <div class="flashcard-wrap" style="margin-top: 30px;">
+        <div class="card-container" id="cardContainer">
+            <div class="card-inner" id="cardInner">
+                <div class="card-front">
+                    <div class="card-meta-row">
+                        <span class="card-num" id="cardNum">#001</span>
+                        <span class="type-badge" id="cardType">IDIOM</span>
+                    </div>
+                    <div class="card-expr" id="cardExpr">Loading…</div>
+                    <div class="card-tap-hint">
+                        <span>👆</span> Tap or <kbd>Space</kbd> to reveal
+                    </div>
+                </div>
+                <div class="card-back">
+                    <div class="meaning-label">Meaning</div>
+                    <div class="meaning-text" id="cardMeaning">...</div>
+                    <div class="meaning-label" style="margin-top:16px;">Example</div>
+                    <div class="example-text" id="cardExample">...</div>
+                </div>
             </div>
-            <div class="meaning-label">Meaning</div>
-            <div class="meaning-text" id="cardMeaning"></div>
-            <div class="meaning-label" style="margin-top:16px;">Example</div>
-            <div class="example-text" id="cardExample"></div>
-          </div>
         </div>
-      </div>
     </div>
 
-    <!-- Action buttons (shown after reveal) -->
-    <div class="card-actions" id="cardActions" style="display:none; margin-bottom: 12px;">
-      <button class="btn btn-correct btn-lg" onclick="markKnown()">✓ I Know This</button>
-      <button class="btn btn-wrong btn-lg"   onclick="markDifficult()">↩ Review Again</button>
-    </div>
+    <div class="controls-pro">
+        <div class="audio-buttons">
+            <button id="audioUSBtn" class="btn-audio">🇺🇸 US (U)</button>
+            <button id="audioUKBtn" class="btn-audio">🇬🇧 UK (B)</button>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-ghost" onclick="prevCard()">← Prev</button>
+            <button class="btn btn-ghost" id="randomBtn">🎲 Random (R)</button>
+            <button class="btn btn-ghost" onclick="nextCard()">Next →</button>
+        </div>
 
-    <!-- Navigation buttons (always visible) -->
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:48px;">
-      <button class="btn btn-ghost" onclick="prevCard()">← Previous</button>
-      <button class="btn btn-ghost" onclick="nextCard()">Next →</button>
+        <button class="btn btn-correct btn-lg" id="knowBtn" style="width:100%; margin-top:15px;">
+            ✓ I Know This (K)
+        </button>
     </div>
 
   </div>
 </div>
 
 <script src="data.js"></script>
-<script>
-/* ── STATE ── */
-let state       = getState();
-let allCards    = [...DATA];
-let deck        = [...DATA];   // filtered deck
-let deckIdx     = 0;
-let revealed    = false;
-let activeType  = 'All';
+<script src="app.js"></script>
 
-/* ── INIT ── */
-(function init() {
-  state = updateStreak(state);
-  saveState(state);
-  applyDeck();
-  renderNav();
-  renderStats();
-  renderCard();
-  setupFilterTabs();
-})();
-
-/* ── FILTER TABS ── */
-function setupFilterTabs() {
-  document.querySelectorAll('.filter-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      activeType = btn.dataset.type;
-      applyDeck();
-      renderCard();
-      updateDeckProgress();
-    });
-  });
-}
-
-function applyDeck() {
-  deck = activeType === 'All' ? [...DATA] : DATA.filter(d => d.type === activeType);
-  deckIdx = Math.min(deckIdx, deck.length - 1);
-  if (deckIdx < 0) deckIdx = 0;
-}
-
-/* ── RENDER CARD ── */
-function renderCard() {
-  if (!deck.length) return;
-  revealed = false;
-  const d = deck[deckIdx];
-  const col = typeColor(d.type);
-
-  document.getElementById('cardBar').style.background = col;
-  document.getElementById('cardNum').textContent = '#' + String(d.n).padStart(3, '0');
-  document.getElementById('cardExpr').textContent = '"' + d.expr + '"';
-
-  const badge = document.getElementById('cardType');
-  badge.textContent = d.type;
-  badge.className = 'type-badge type-' + (d.type === 'phrasal verb' ? 'phrasal' : d.type);
-
-  document.getElementById('cardMeaning').textContent = d.meaning;
-  document.getElementById('cardExample').textContent = d.example;
-
-  // Hide revealed section
-  document.getElementById('cardRevealed').classList.remove('show');
-  document.getElementById('tapHint').style.display = 'flex';
-  document.getElementById('cardActions').style.display = 'none';
-
-  updateDeckProgress();
-
-  // Animate in
-  const fc = document.getElementById('flashcard');
-  fc.classList.remove('anim-popin');
-  void fc.offsetWidth; // reflow
-  fc.classList.add('anim-popin');
-}
-
-/* ── REVEAL ── */
-function revealCard() {
-  if (revealed) return;
-  revealed = true;
-  document.getElementById('cardRevealed').classList.add('show');
-  document.getElementById('tapHint').style.display = 'none';
-  document.getElementById('cardActions').style.display = 'grid';
-}
-
-/* ── NAVIGATION ── */
-function nextCard() {
-  deckIdx = (deckIdx + 1) % deck.length;
-  renderCard();
-}
-function prevCard() {
-  deckIdx = (deckIdx - 1 + deck.length) % deck.length;
-  renderCard();
-}
-
-/* ── MARK KNOWN ── */
-function markKnown() {
-  const d = deck[deckIdx];
-  const isNew = !state.learned.has(d.n);
-  state.learned.add(d.n);
-  state.difficult.delete(d.n);  // remove from review if learned
-
-  if (isNew) {
-    state.xp += 10;
-    showXpPop('+10 XP');
-  }
-  saveState(state);
-  renderNav();
-  renderStats();
-  showToast('✓ Marked as learned!');
-  setTimeout(() => nextCard(), 400);
-}
-
-/* ── MARK DIFFICULT ── */
-function markDifficult() {
-  const d = deck[deckIdx];
-  state.difficult.add(d.n);
-  state.learned.delete(d.n);
-  saveState(state);
-  renderStats();
-  showToast('↩ Added to Review list');
-  setTimeout(() => nextCard(), 400);
-}
-
-/* ── UPDATE DECK PROGRESS ── */
-function updateDeckProgress() {
-  const total = deck.length;
-  const learnedInDeck = deck.filter(d => state.learned.has(d.n)).length;
-  const pct = total ? Math.round((learnedInDeck / total) * 100) : 0;
-  document.getElementById('deckPos').textContent = `Card ${deckIdx + 1} of ${total}`;
-  document.getElementById('deckPct').textContent = `${pct}% complete`;
-  document.getElementById('deckProgressFill').style.width = pct + '%';
-}
-
-/* ── RENDER STATS ── */
-function renderStats() {
-  const learnedCount = state.learned.size;
-  const pct = Math.round((learnedCount / DATA.length) * 100);
-  document.getElementById('statTotal').textContent    = DATA.length;
-  document.getElementById('statLearned').textContent  = learnedCount;
-  document.getElementById('statDifficult').textContent= state.difficult.size;
-  document.getElementById('statPct').textContent      = pct + '%';
-  updateDeckProgress();
-}
-
-/* ── RENDER NAV ── */
-function renderNav() {
-  document.getElementById('navStreak').textContent = '🔥 ' + state.streak;
-  document.getElementById('navXP').textContent     = '⭐ ' + state.xp + ' XP';
-}
-
-/* ── TOAST ── */
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
-}
-
-/* ── XP POP ── */
-function showXpPop(msg) {
-  const el = document.getElementById('xpPop');
-  el.textContent = msg;
-  el.classList.remove('fly');
-  void el.offsetWidth;
-  el.classList.add('fly');
-}
-
-/* ── KEYBOARD ── */
-document.addEventListener('keydown', e => {
-  if (e.key === 'ArrowRight' || e.key === ' ') {
-    e.preventDefault();
-    revealed ? nextCard() : revealCard();
-  }
-  if (e.key === 'ArrowLeft') { e.preventDefault(); prevCard(); }
-  if (e.key === 'k' || e.key === 'K') { if (revealed) markKnown(); }
-  if (e.key === 'r' || e.key === 'R') { if (revealed) markDifficult(); }
-});
-</script>
 </body>
 </html>
