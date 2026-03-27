@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IdiomVault — Flashcards Pro</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-logo">IdiomVault <span>Pro</span></div>
+    <div class="nav-xp">
+        <div class="streak-pill">🔥 <span id="streak">0</span></div>
+        <div class="xp-pill">⭐ <span id="score">0</span> XP</div>
+    </div>
+</nav>
+
+<div class="app-container" style="margin-top: 100px;">
+    <div class="card-container" id="cardContainer">
+        <div class="card-inner" id="cardInner">
+            <div class="card-front">
+                <div class="type-badge" id="typeBadge">IDIOM</div>
+                <h2 id="expression">Loading...</h2>
+                <p class="hint">Press <kbd>Space</kbd> or Click</p>
+            </div>
+            <div class="card-back">
+                <p id="meaning">Definition...</p>
+                <div class="example-box">
+                    <p id="example">Example...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls" style="text-align:center; margin-top:20px;">
+        <button id="audioUSBtn">🇺🇸 US Voice (U)</button>
+        <button id="audioUKBtn">🇬🇧 UK Voice (B)</button>
+        <button id="randomBtn">🎲 Random (R)</button>
+    </div>
+
+    <div class="shortcuts-hint">
+        <p>Press <kbd>K</kbd> if you knew it (+10 XP)</p>
+    </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
