@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IdiomVault — Flashcards Pro</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IdiomVault — Flashcards</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Petit ajout CSS pour les nouveaux boutons audio sur la carte */
+  .audio-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+  .btn-mini-audio {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 6px;
+    transition: 0.2s;
+  }
+  .btn-mini-audio:hover { background: var(--accent); border-color: var(--accent); }
+</style>
 </head>
 <body>
 
@@ -19,8 +38,8 @@
     <a href="challenge.html" class="nav-link"><span class="nl-icon">🧠</span><span class="nl-text">Challenge</span></a>
   </div>
   <div class="nav-xp">
-    <div class="streak-pill">🔥 <span id="navStreak">0</span></div>
-    <div class="xp-pill">⭐ <span id="navXP">0 XP</span></div>
+    <div class="streak-pill" id="navStreak">🔥 0</div>
+    <div class="xp-pill" id="navXP">⭐ 0 XP</div>
   </div>
 </nav>
 
@@ -31,8 +50,8 @@
   <div class="container">
 
     <div class="page-hero">
-      <h1 class="page-hero-title"><em>Flashcard</em> Pro</h1>
-      <p class="page-hero-sub">Use <kbd>U</kbd> or <kbd>B</kbd> for Audio | <kbd>Space</kbd> to Flip</p>
+      <h1 class="page-hero-title"><em>Flashcard</em> Mode</h1>
+      <p class="page-hero-sub">Tap to reveal | <kbd>U</kbd> or <kbd>B</kbd> for Audio</p>
     </div>
 
     <div class="stat-strip">
@@ -45,56 +64,231 @@
         <span class="stat-lbl">Learned</span>
       </div>
       <div class="stat-item">
+        <span class="stat-val" id="statDifficult">0</span>
+        <span class="stat-lbl">Review</span>
+      </div>
+      <div class="stat-item">
         <span class="stat-val" id="statPct">0%</span>
-        <span class="stat-lbl">Progress</span>
+        <span class="stat-lbl">Done</span>
       </div>
     </div>
 
-    <div class="flashcard-wrap" style="margin-top: 30px;">
-        <div class="card-container" id="cardContainer">
-            <div class="card-inner" id="cardInner">
-                <div class="card-front">
-                    <div class="card-meta-row">
-                        <span class="card-num" id="cardNum">#001</span>
-                        <span class="type-badge" id="cardType">IDIOM</span>
-                    </div>
-                    <div class="card-expr" id="cardExpr">Loading…</div>
-                    <div class="card-tap-hint">
-                        <span>👆</span> Tap or <kbd>Space</kbd> to reveal
-                    </div>
-                </div>
-                <div class="card-back">
-                    <div class="meaning-label">Meaning</div>
-                    <div class="meaning-text" id="cardMeaning">...</div>
-                    <div class="meaning-label" style="margin-top:16px;">Example</div>
-                    <div class="example-text" id="cardExample">...</div>
-                </div>
-            </div>
-        </div>
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab on" data-type="All">All</button>
+      <button class="filter-tab" data-type="idiom">Idiom</button>
+      <button class="filter-tab" data-type="proverb">Proverb</button>
+      <button class="filter-tab" data-type="slang">Slang</button>
+      <button class="filter-tab" data-type="phrasal verb">Phrasal Verb</button>
     </div>
 
-    <div class="controls-pro">
-        <div class="audio-buttons">
-            <button id="audioUSBtn" class="btn-audio">🇺🇸 US (U)</button>
-            <button id="audioUKBtn" class="btn-audio">🇬🇧 UK (B)</button>
-        </div>
-        
-        <div class="action-buttons">
-            <button class="btn btn-ghost" onclick="prevCard()">← Prev</button>
-            <button class="btn btn-ghost" id="randomBtn">🎲 Random (R)</button>
-            <button class="btn btn-ghost" onclick="nextCard()">Next →</button>
-        </div>
+    <div class="flashcard-wrap">
+      <div class="flashcard" id="flashcard" onclick="revealCard()">
+        <div class="card-top-bar" id="cardBar"></div>
+        <div class="card-inner">
+          
+          <div class="audio-controls">
+            <button title="US Accent (U)" class="btn-mini-audio" onclick="event.stopPropagation(); speak('en-US')">🇺🇸</button>
+            <button title="UK Accent (B)" class="btn-mini-audio" onclick="event.stopPropagation(); speak('en-GB')">🇬🇧</button>
+          </div>
 
-        <button class="btn btn-correct btn-lg" id="knowBtn" style="width:100%; margin-top:15px;">
-            ✓ I Know This (K)
-        </button>
+          <div class="card-meta-row">
+            <span class="card-num" id="cardNum">#001</span>
+            <span class="type-badge" id="cardType">idiom</span>
+          </div>
+          <div class="card-expr" id="cardExpr">Loading…</div>
+          <div class="card-tap-hint" id="tapHint">
+            <span>👆</span> Tap to reveal meaning
+          </div>
+
+          <div class="card-revealed" id="cardRevealed">
+            <div class="card-divider">
+              <div class="card-divider-line"></div>
+              <div class="card-divider-dot"></div>
+              <div class="card-divider-line"></div>
+            </div>
+            <div class="meaning-label">Meaning</div>
+            <div class="meaning-text" id="cardMeaning"></div>
+            <div class="meaning-label" style="margin-top:16px;">Example</div>
+            <div class="example-text" id="cardExample"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-actions" id="cardActions" style="display:none; margin-bottom: 12px;">
+      <button class="btn btn-correct btn-lg" onclick="markKnown()">✓ I Know This</button>
+      <button class="btn btn-wrong btn-lg"   onclick="markDifficult()">↩ Review Again</button>
+    </div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:48px;">
+      <button class="btn btn-ghost" onclick="prevCard()">← Previous</button>
+      <button class="btn btn-ghost" onclick="randomCard()">🎲 Random (R)</button>
+      <button class="btn btn-ghost" onclick="nextCard()">Next →</button>
     </div>
 
   </div>
 </div>
 
 <script src="data.js"></script>
-<script src="app.js"></script>
+<script>
+/* ── STATE ── */
+let state       = getState();
+let allCards    = [...DATA];
+let deck        = [...DATA];
+let deckIdx     = 0;
+let revealed    = false;
+let activeType  = 'All';
 
+/* ── INIT ── */
+(function init() {
+  state = updateStreak(state);
+  saveState(state);
+  applyDeck();
+  renderNav();
+  renderStats();
+  renderCard();
+  setupFilterTabs();
+})();
+
+/* ── NOUVELLE FONCTION AUDIO ── */
+function speak(lang) {
+  const d = deck[deckIdx];
+  if (!d) return;
+  const msg = new SpeechSynthesisUtterance(d.expr);
+  msg.lang = lang;
+  msg.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(msg);
+}
+
+/* ── NOUVELLE FONCTION RANDOM ── */
+function randomCard() {
+  if (deck.length <= 1) return;
+  let newIdx;
+  do { newIdx = Math.floor(Math.random() * deck.length); } while (newIdx === deckIdx);
+  deckIdx = newIdx;
+  renderCard();
+}
+
+/* ── NAVIGATION & FILTERS (Intacte) ── */
+function setupFilterTabs() {
+  document.querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      activeType = btn.dataset.type;
+      applyDeck();
+      renderCard();
+    });
+  });
+}
+
+function applyDeck() {
+  deck = activeType === 'All' ? [...DATA] : DATA.filter(d => d.type === activeType);
+  deckIdx = 0;
+}
+
+function renderCard() {
+  if (!deck.length) return;
+  revealed = false;
+  const d = deck[deckIdx];
+  const col = typeColor(d.type);
+
+  document.getElementById('cardBar').style.background = col;
+  document.getElementById('cardNum').textContent = '#' + String(d.n).padStart(3, '0');
+  document.getElementById('cardExpr').textContent = '"' + d.expr + '"';
+
+  const badge = document.getElementById('cardType');
+  badge.textContent = d.type;
+  badge.className = 'type-badge type-' + (d.type === 'phrasal verb' ? 'phrasal' : d.type);
+
+  document.getElementById('cardMeaning').textContent = d.meaning;
+  document.getElementById('cardExample').textContent = d.example;
+
+  document.getElementById('cardRevealed').classList.remove('show');
+  document.getElementById('tapHint').style.display = 'flex';
+  document.getElementById('cardActions').style.display = 'none';
+
+  const fc = document.getElementById('flashcard');
+  fc.classList.remove('anim-popin');
+  void fc.offsetWidth;
+  fc.classList.add('anim-popin');
+}
+
+function revealCard() {
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('cardRevealed').classList.add('show');
+  document.getElementById('tapHint').style.display = 'none';
+  document.getElementById('cardActions').style.display = 'grid';
+}
+
+function nextCard() { deckIdx = (deckIdx + 1) % deck.length; renderCard(); }
+function prevCard() { deckIdx = (deckIdx - 1 + deck.length) % deck.length; renderCard(); }
+
+function markKnown() {
+  const d = deck[deckIdx];
+  const isNew = !state.learned.has(d.n);
+  state.learned.add(d.n);
+  state.difficult.delete(d.n);
+  if (isNew) { state.xp += 10; showXpPop('+10 XP'); }
+  saveState(state);
+  renderNav();
+  renderStats();
+  showToast('✓ Learned!');
+  setTimeout(() => nextCard(), 400);
+}
+
+function markDifficult() {
+  const d = deck[deckIdx];
+  state.difficult.add(d.n);
+  state.learned.delete(d.n);
+  saveState(state);
+  renderStats();
+  showToast('↩ Review List');
+  setTimeout(() => nextCard(), 400);
+}
+
+function renderStats() {
+  const learnedCount = state.learned.size;
+  const pct = Math.round((learnedCount / DATA.length) * 100);
+  document.getElementById('statTotal').textContent = DATA.length;
+  document.getElementById('statLearned').textContent = learnedCount;
+  document.getElementById('statDifficult').textContent = state.difficult.size;
+  document.getElementById('statPct').textContent = pct + '%';
+}
+
+function renderNav() {
+  document.getElementById('navStreak').textContent = '🔥 ' + state.streak;
+  document.getElementById('navXP').textContent = '⭐ ' + state.xp + ' XP';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function showXpPop(msg) {
+  const el = document.getElementById('xpPop');
+  el.textContent = msg; el.classList.remove('fly');
+  void el.offsetWidth; el.classList.add('fly');
+}
+
+/* ── KEYBOARD UPDATED ── */
+document.addEventListener('keydown', e => {
+  const key = e.key.toLowerCase();
+  if (key === 'arrowright' || key === ' ') {
+    e.preventDefault();
+    revealed ? nextCard() : revealCard();
+  }
+  if (key === 'arrowleft') { e.preventDefault(); prevCard(); }
+  if (key === 'u') speak('en-US');
+  if (key === 'b') speak('en-GB');
+  if (key === 'r') randomCard();
+  if (key === 'k') { if (revealed) markKnown(); }
+});
+</script>
 </body>
 </html>
