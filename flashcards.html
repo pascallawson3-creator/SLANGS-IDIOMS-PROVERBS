@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IdiomVault — Flashcards</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>IdiomVault <span>by BODY</span></h1>
+    <p>Master English idioms with flashcards</p>
+  </div>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item">📊 <span id="currentIndex">1</span> / <span id="totalCount">0</span></div>
+    <div class="stat-item">🏆 <span id="score">0</span> pts</div>
+    <div class="stat-item">🔥 <span id="streak">0</span> streak</div>
+  </div>
+
+  <!-- FLASHCARD AREA -->
+  <div class="flashcard-container">
+    <div class="flashcard" id="flashcard">
+      <div class="expression" id="expression">Loading…</div>
+      <div class="type-badge" id="typeBadge"></div>
+      <div class="meaning"    id="meaning"></div>
+      <div class="example"    id="example"></div>
+    </div>
+
+    <!-- AUDIO -->
+    <div class="audio-section">
+      <button id="audioUSBtn">🇺🇸 American English</button>
+      <button id="audioUKBtn">🇬🇧 British English</button>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="nav-buttons">
+      <button id="prevBtn">← Prev</button>
+      <button id="randomBtn">🎲 Random</button>
+      <button id="nextBtn">Next →</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <button id="shuffleBtn">🔄 Shuffle Deck</button>
+    <button id="resetScoreBtn">Reset Score</button>
+  </div>
+
+</div>
+
+<!-- data.js must come first — it exposes the DATA array -->
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
